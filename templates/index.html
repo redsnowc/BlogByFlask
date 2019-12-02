@@ -1,21 +1,23 @@
-{% extends 'base.html' %}
-
-{% block title %}index{% endblock %}
-{% block css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-{% endblock %}
-
-{% block content %}
-    {% include '_list.html' %}
-    <a href="{{ url_for('hi', username='redsnow') }}"><button type="button">点击我</button></a>
-    <p>列表的第一个元素是：{{ languages | first }}</p>
-    <p>列表的长度是：{{ languages | length }}</p>
-    <p>{{ tel | hidden_tel }}</p>
-{% endblock %}
-
-{% block js %}
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
-{% endblock %}
+{#<h1>1111</h1>#}
+{#{% extends 'base.html' %}#}
+{##}
+{#{% block title %}index{% endblock %}#}
+{#{% block css %}#}
+{#    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">#}
+{#{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#    {% include '_list.html' %}#}
+{#    <a href="{{ url_for('hi', username='redsnow') }}"><button type="button">点击我</button></a>#}
+{#    <p>列表的第一个元素是：{{ languages | first }}</p>#}
+{#    <p>列表的长度是：{{ languages | length }}</p>#}
+{#    <p>{{ tel | hidden_tel }}</p>#}
+{#    <p>{{ user.name }}</p>#}
+{#{% endblock %}#}
+{##}
+{#{% block js %}#}
+{#    <script src="{{ url_for('static', filename='main.js') }}"></script>#}
+{#{% endblock %}#}
 {##}
 {#<!DOCTYPE html>#}
 {#<html lang="en">#}
@@ -28,7 +30,7 @@
 {#<h1>Jinja2 示例</h1>#}
 {#<p>Hello {{ username.upper() }}</p>#}
 {#{{ list_item(languages) }}#}
-{#{% if user.permission == 'admin' %}#}
+{#{% if user.permission == 'home' %}#}
 {#    <p>用户 {{ user.username }} 是管理员</p>#}
 {#{% else %}#}
 {#    <p>用户 {{ user.username }} 是普通用户</p>#}
