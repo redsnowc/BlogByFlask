@@ -11,6 +11,7 @@ flask = "*"
 pymysql = "*"
 flask-sqlalchemy = "*"
 flask-shell-ipython = "*"
+flask-wtf = "*"
 
 [requires]
 python_version = "3.7"
