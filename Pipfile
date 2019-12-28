@@ -4,15 +4,8 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-ipython = "*"
 
 [packages]
-flask = "*"
-pymysql = "*"
-flask-sqlalchemy = "*"
-flask-shell-ipython = "*"
-flask-wtf = "*"
-cryptography = "*"
 
 [requires]
 python_version = "3.7"

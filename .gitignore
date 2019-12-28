@@ -81,7 +81,7 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-.env
+01 项目目录结构/.env
 .venv
 env/
 venv/
@@ -109,3 +109,5 @@ venv.bak/
 whooshee
 migrations
 .DS_Store
+
+!.gitkeep
