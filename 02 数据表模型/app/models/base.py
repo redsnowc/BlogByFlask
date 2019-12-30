@@ -1,3 +1,5 @@
+from typing import Dict
+
 from app.libs.extensions import db
 
 
@@ -7,7 +9,7 @@ class Base(db.Model):
     """
     __abstract__ = True
 
-    def set_attr(self, attrs_dict):
+    def set_attr(self, attrs_dict: Dict):
         """
         将表单字段传递给数据表模型对应字段
         :param attrs_dict: 表单字段字典
