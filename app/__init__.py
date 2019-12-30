@@ -45,4 +45,9 @@ def register_cli(app: Flask):
             db.drop_all()
             click.echo('数据表删除成功')
         db.create_all()
+        # 初始化数据后在分类表中添加一条记录作为默认默认分类
+        with db.auto_commit():
+            category = Category()
+            category.name = "未分类"
+            db.add(category)
         click.echo('数据表已成功创建')
