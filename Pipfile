@@ -12,8 +12,8 @@ pymysql = "*"
 flask-migrate = "*"
 python-dotenv = "*"
 flask-shell = "*"
-flask-ipython = "*"
 flask-shell-ipython = "*"
+faker = "*"
 
 [requires]
 python_version = "3.7"

@@ -16,6 +16,6 @@ class Base(db.Model):
         :return: None
         """
         for key, value in attrs_dict.items():
-            if key != "id" and hasattr(self, key):
+            if key != 'id' and hasattr(self, key):
                 setattr(self, key, value)
 
