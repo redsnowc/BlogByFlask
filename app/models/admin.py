@@ -22,8 +22,8 @@ class Admin(Base):
         return self._password
 
     @password.setter
-    def password(self, row):
+    def password(self, row: str):
         self._password = generate_password_hash(row)
 
-    def check_password(self, row):
+    def check_password(self, row: str):
         return check_password_hash(self._password, row)
