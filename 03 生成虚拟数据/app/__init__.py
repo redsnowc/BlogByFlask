@@ -91,26 +91,3 @@ def register_cli(app: Flask):
         click.echo('Done!')
 
         click.echo('数据已全部生成完毕！')
-
-
-if __name__ == "__main__":
-    class Test:
-        def __init__(self, name):
-            self.name = name
-            self._age = None
-
-        @property
-        def age(self):
-            return self._age
-
-        @age.setter
-        def age(self, age):
-            if isinstance(age, int) and 0 < age < 130:
-                self._age = age
-            else:
-                raise TypeError('Wrong age value!')
-
-
-    t = Test('kk')
-    print(t.__dict__)
-
