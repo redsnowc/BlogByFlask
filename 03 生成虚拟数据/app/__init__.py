@@ -57,6 +57,7 @@ def register_cli(app: Flask):
         with db.auto_commit():
             category = Category()
             category.name = '未分类'
+            category.show = False
             db.session.add(category)
         click.echo('数据表已成功创建')
 

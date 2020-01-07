@@ -9,3 +9,4 @@ class Category(Base):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(12), nullable=False, unique=True)
     posts = db.relationship("Post", secondary='post_category_middle')
+    show = db.Column(db.Boolean, default=True)
