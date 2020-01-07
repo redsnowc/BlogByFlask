@@ -2,6 +2,7 @@ import click
 import os
 
 from flask import Flask
+from datetime import datetime
 
 from app.configs import configs
 from app.libs.extensions import db, migrate
@@ -18,7 +19,9 @@ def create_app(config: str = 'development') -> Flask:
     app = Flask(__name__)
     app.config.from_object(configs[config])
     register_extensions(app)
+    register_blueprints(app)
     register_cli(app)
+    register_template_context(app)
     return app
 
 
@@ -30,6 +33,16 @@ def register_extensions(app: Flask):
     """
     db.init_app(app)
     migrate.init_app(app, db)
+
+
+def register_blueprints(app: Flask):
+    """
+    注册蓝图
+    :param app: Flask 核心对象
+    :return: None
+    """
+    from app.web import web
+    app.register_blueprint(web)
 
 
 def register_cli(app: Flask):
@@ -57,6 +70,7 @@ def register_cli(app: Flask):
         with db.auto_commit():
             category = Category()
             category.name = '未分类'
+            category.show = False
             db.session.add(category)
         click.echo('数据表已成功创建')
 
@@ -93,24 +107,16 @@ def register_cli(app: Flask):
         click.echo('数据已全部生成完毕！')
 
 
-if __name__ == "__main__":
-    class Test:
-        def __init__(self, name):
-            self.name = name
-            self._age = None
-
-        @property
-        def age(self):
-            return self._age
-
-        @age.setter
-        def age(self, age):
-            if isinstance(age, int) and 0 < age < 130:
-                self._age = age
-            else:
-                raise TypeError('Wrong age value!')
-
-
-    t = Test('kk')
-    print(t.__dict__)
-
+def register_template_context(app: Flask):
+    """
+    注册模板全局变量
+    :param app: Flask 核心对象
+    :return dict: 传递给全局模板的数据
+    """
+    @app.context_processor
+    def generate_template_context():
+        admin = Admin.query.first()
+        categories = Category.query.all()
+        links = Link.query.all()
+        current_year = datetime.now().year
+        return {"admin": admin, "categories": categories, "links": links, "current_year": current_year}
