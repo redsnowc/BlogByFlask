@@ -12,10 +12,3 @@ def index():
     pagination = Post.query.order_by(
         Post.create_time.desc()).paginate(per_page=per_page)
     return render_template('blog/index.html', pagination=pagination)
-
-
-@web.route('/test')
-def test():
-    pagination = Post.query.order_by(
-        Post.create_time.desc()).paginate(per_page=10)
-    return render_template('1.html', pagination=pagination)
