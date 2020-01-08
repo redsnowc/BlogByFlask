@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import redner_index_links, render_post_summary, render_pagination%}
+
+{% block meta %}
+    <meta name="description" content="{{ admin.blog_subtitle }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Home">
+    <meta property="og:description" content="{{ admin.blog_subtitle }}">
+    <meta property="og:url" content="{{ request.remote_addr }}">
+{% endblock %}
+
+{% block title %}{{ admin.blog_title }} - {{ admin.blog_subtitle }}{% endblock %}
+
+{% block content %}
+    <!-- 巨幕开始 -->
+    <div class="jumbotron jumbotron-fluid d-flex align-items-center min-vh-100" id="indexJumbotron">
+        <div class="container">
+            <h1 class="display-2">{{ admin.blog_title }}</h1>
+            <p class="lead col-12">{{ admin.blog_subtitle }}</p>
+            <div class="row justify-content-center">
+                <ul class="link-list">
+                    {{ redner_index_links(links) }}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 巨幕结束 -->
+
+    <!-- 文章摘要开始 -->
+    <div class="container posts-container">
+        <div class="row">
+            <div class="col-12 header">
+                <hr>
+            </div>
+            {% for post in pagination.items %}
+                {{ render_post_summary(post, admin) }}
+            {% endfor %}
+            {{ render_pagination(pagination, 'web.index') }}
+        </div>
+    </div>
+    <!-- 文章摘要结束 -->
+
+    {{ super() }}
+
+{% endblock %}
+
+{% block js %}
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+{% endblock %}
