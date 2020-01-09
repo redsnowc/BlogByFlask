@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'macros.html' import render_posts_container %}
 
 {% block meta %}
     <meta name="description" content="{{ admin.blog_subtitle }}">
@@ -12,12 +13,12 @@
 
 {% block content %}
     <!-- 巨幕开始 -->
-    <div class="jumbotron jumbotron-fluid d-flex align-items-center category-jumbotron" id="categoryJumbotron">
+    <div class="jumbotron jumbotron-fluid d-flex align-items-center category-jumbotron">
         <h1 class="display-4 col-12">分类 · {{ category.name }}</h1>
     </div>
     <!-- 巨幕结束 -->
 
-    {% include 'blog/_posts_container.html' %}
+    {{ render_posts_container(pagination, admin, 'web.category', name_or_alias=category.tag or category.name) }}
 
     {{ super() }}
 {% endblock %}

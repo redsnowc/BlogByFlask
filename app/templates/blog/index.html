@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import render_index_links %}
+{% from 'macros.html' import render_index_links, render_posts_container %}
 
 {% block meta %}
     <meta name="description" content="{{ admin.blog_subtitle }}">
@@ -26,7 +26,7 @@
     </div>
     <!-- 巨幕结束 -->
 
-    {% include 'blog/_posts_container.html' %}
+    {{ render_posts_container(pagination, admin, 'web.index') }}
 
     {{ super() }}
 
