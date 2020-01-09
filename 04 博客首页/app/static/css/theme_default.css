@@ -115,7 +115,6 @@ hr {
 }
 
 .meta-link {
-    text-decoration: none;
     color: #888888;
     padding-bottom: 3px;
     border-bottom: 1px solid transparent;
@@ -123,6 +122,7 @@ hr {
 }
 
 .meta-link:hover {
+    text-decoration: none;
     color: #333333;
     border-bottom: 1px solid #333333;
 }
