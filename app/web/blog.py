@@ -1,7 +1,7 @@
 from flask import render_template
 
 from app.web import web
-from app.models import Post, Admin
+from app.models import Post, Admin, Category
 
 
 @web.route('/')
@@ -14,8 +14,15 @@ def index():
     return render_template('blog/index.html', pagination=pagination)
 
 
-@web.route('/test')
-def test():
-    pagination = Post.query.order_by(
-        Post.create_time.desc()).paginate(per_page=10)
-    return render_template('1.html', pagination=pagination)
+@web.route('/category/<name_or_alias>')
+def category(name_or_alias):
+    category = Category.query.filter(Category.alias == name_or_alias).first()
+
+    if not category:
+        category = Category.query.filter(Category.name == name_or_alias).first_or_404()
+
+    admin = Admin.query.first()
+    per_page = admin.per_page
+    pagination = Post.query.with_parent(category).order_by(
+        Post.create_time.desc()).paginate(per_page=per_page)
+    return render_template('blog/category.html', category=category, pagination=pagination)

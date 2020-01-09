@@ -1,6 +1,7 @@
 import random
 
 from faker import Faker
+from pypinyin import lazy_pinyin
 
 from app.models import Admin, Category, Comment, Post, Link
 from app.libs.extensions import db
@@ -44,6 +45,7 @@ class FakeData:
             with db.auto_commit():
                 category = Category()
                 category.name = category_name
+                category.alias = ''.join(lazy_pinyin(category_name))
                 db.session.add(category)
 
     @classmethod

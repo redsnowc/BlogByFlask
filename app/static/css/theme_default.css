@@ -35,9 +35,19 @@ body {
     overflow: hidden;
 }
 
+/* 分类页巨幕高度 */
+.category-jumbotron {
+    height: 30rem;
+}
+
 .jumbotron .display-2 {
     text-align: center;
     font-weight: bold;
+}
+
+.jumbotron .display-4 {
+    text-align: center;
+    font-size: 3rem;
 }
 
 .jumbotron .lead {
@@ -115,7 +125,6 @@ hr {
 }
 
 .meta-link {
-    text-decoration: none;
     color: #888888;
     padding-bottom: 3px;
     border-bottom: 1px solid transparent;
@@ -123,6 +132,7 @@ hr {
 }
 
 .meta-link:hover {
+    text-decoration: none;
     color: #333333;
     border-bottom: 1px solid #333333;
 }

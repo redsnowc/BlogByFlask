@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'macros.html' import redner_index_links, render_post_summary, render_pagination%}
+{% from 'macros.html' import render_index_links %}
 
 {% block meta %}
     <meta name="description" content="{{ admin.blog_subtitle }}">
@@ -19,31 +19,20 @@
             <p class="lead col-12">{{ admin.blog_subtitle }}</p>
             <div class="row justify-content-center">
                 <ul class="link-list">
-                    {{ redner_index_links(links) }}
+                    {{ render_index_links(links) }}
                 </ul>
             </div>
         </div>
     </div>
     <!-- 巨幕结束 -->
 
-    <!-- 文章摘要开始 -->
-    <div class="container posts-container">
-        <div class="row">
-            <div class="col-12 header">
-                <hr>
-            </div>
-            {% for post in pagination.items %}
-                {{ render_post_summary(post, admin) }}
-            {% endfor %}
-            {{ render_pagination(pagination, 'web.index') }}
-        </div>
-    </div>
-    <!-- 文章摘要结束 -->
+    {% include 'blog/_posts_container.html' %}
 
     {{ super() }}
 
 {% endblock %}
 
 {% block js %}
+    {{ super() }}
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 {% endblock %}
