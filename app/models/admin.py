@@ -1,10 +1,11 @@
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 from app.models.base import Base
 from app.libs.extensions import db
 
 
-class Admin(Base):
+class Admin(Base, UserMixin):
     """
     管理员及博客设置数据表模型类
     """

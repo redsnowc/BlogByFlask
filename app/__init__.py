@@ -5,7 +5,7 @@ from flask import Flask
 from datetime import datetime
 
 from app.configs import configs
-from app.libs.extensions import db, migrate
+from app.libs.extensions import db, migrate, get_login_manager
 from app.models import Post, Category, post_category_middle, Comment, Admin, Link
 from app.libs.fake_data import FakeData
 
@@ -33,6 +33,8 @@ def register_extensions(app: Flask):
     """
     db.init_app(app)
     migrate.init_app(app, db)
+    login_manager = get_login_manager()
+    login_manager.init_app(app)
 
 
 def register_blueprints(app: Flask):
@@ -106,6 +108,40 @@ def register_cli(app: Flask):
         click.echo('Done!')
 
         click.echo('数据已全部生成完毕！')
+
+    @app.cli.command()
+    @click.option('--username', prompt='请输入管理员用户名', help='管理员用户名')
+    @click.password_option(prompt='请输入管理员密码', help='管理员密码')
+    def admin(username, password):
+        """设置管理员用户名与密码"""
+
+        # 处理 MySQL 错误
+        try:
+            admin = Admin.query.first()
+        except Exception as e:
+            if '1146' in str(e.orig):
+                click.echo('数据表不存在，请执行 `flask initdb` 创建数据表')
+            else:
+                print(e)
+                click.echo('请检查错误信息')
+            return
+
+        with db.auto_commit():
+            if admin:
+                click.echo('更新管理员账户信息...')
+                admin.username = username
+                admin.password = password
+            else:
+                click.echo('创建管理员账户中...')
+                admin = Admin()
+                admin.username = username
+                admin.password = password
+                admin.blog_title = '临时博客名'
+                admin.blog_subtitle = '临时博客副标题'
+                admin.blog_about = '临时博客关于'
+                admin.nickname = '临时昵称'
+            db.session.add(admin)
+            click.echo('Done.')
 
 
 def register_template_context(app: Flask):

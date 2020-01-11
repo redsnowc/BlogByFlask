@@ -22,7 +22,7 @@ class FakeData:
         with db.auto_commit():
             admin = Admin()
             admin.username = 'admin'
-            admin.password = '1234'
+            admin.password = '12345678'
             admin.nickname = '临时管理员昵称'
             admin.blog_title = '临时博客名'
             admin.blog_subtitle = '临时博客副标题'

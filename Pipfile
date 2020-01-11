@@ -16,6 +16,8 @@ flask-shell-ipython = "*"
 faker = "*"
 cryptography = "*"
 pypinyin = "*"
+flask-wtf = "*"
+flask-login = "*"
 
 [requires]
 python_version = "3.7"

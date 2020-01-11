@@ -2,6 +2,7 @@ from contextlib import contextmanager
 
 from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 
 class SQLALCHEMY(_SQLAlchemy):
@@ -20,3 +21,23 @@ class SQLALCHEMY(_SQLAlchemy):
 
 db = SQLALCHEMY()
 migrate = Migrate()
+
+
+def get_login_manager() -> LoginManager:
+    """
+    配置并返回 LoginManager 实例
+    :return: LoginManager 实例
+    """
+    login_manager = LoginManager()
+
+    @login_manager.user_loader
+    def get_user(uid):
+        """处理访问控制"""
+        from app.models.admin import Admin
+        return Admin.query.get(int(uid))
+
+    login_manager.login_view = 'web.login'                # 登录视图的 endpoint
+    login_manager.login_message = '无权访问此页面，请先登录'   # 重新向 Flash 信息
+    login_manager.login_message_category = 'error'        # 重定向 Flask 信息分类
+
+    return login_manager

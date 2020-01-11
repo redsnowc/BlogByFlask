@@ -1,5 +1,7 @@
 import os
 
+from datetime import timedelta
+
 
 class BaseConfig:
     """
@@ -8,6 +10,8 @@ class BaseConfig:
     SECRET_KEY = os.getenv('SECRET_KEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_RECORD_QUERIES = True
+    REMEMBER_COOKIE_DURATION = timedelta(days=31)
+    PERMANENT_SESSION_LIFETIME = timedelta(days=3)
 
 
 class DevelopmentConfig(BaseConfig):
