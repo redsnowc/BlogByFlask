@@ -23,7 +23,8 @@
     </script>
 
     <!-- bootstrap CSS -->
-    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/css/bootstrap.min.css" id="bootstrapCss">
+    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/css/bootstrap.min.css"
+          id="bootstrapCss">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme_default.css') }}">
 </head>
 <body>
@@ -38,9 +39,18 @@
         <ul class="navbar-nav">
             {% for category in categories %}
                 {% if category.show %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('web.category', name_or_alias=category.alias or category.name) }}">{{ category.name }}</a>
-                    </li>
+                    {% if request.path == url_for('web.category', name_or_alias=category.alias or category.name) %}
+                        <li class="nav-item active">
+                            <a class="nav-link disabled" href="#">{{ category.name }}
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="{{ url_for('web.category', name_or_alias=category.alias or category.name) }}">{{ category.name }}</a>
+                        </li>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
         </ul>
