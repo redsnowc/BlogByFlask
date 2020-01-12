@@ -1,4 +1,4 @@
-{% extends '_base.html' %}
+{% extends 'blog/blog_base.html' %}
 {% from 'macros.html' import render_posts_container %}
 
 {% block meta %}
@@ -25,4 +25,5 @@
 
 {% block js %}
     {{ super() }}
+    <script src="{{ url_for('static', filename='js/totop.js') }}"></script>
 {% endblock %}

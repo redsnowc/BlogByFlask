@@ -11,7 +11,7 @@ def index():
     per_page = admin.per_page
     pagination = Post.query.order_by(
         Post.create_time.desc()).paginate(per_page=per_page)
-    return render_template('blog/index.html', pagination=pagination)
+    return render_template('blog/_index.html', pagination=pagination)
 
 
 @web.route('/category/<name_or_alias>')
@@ -32,4 +32,4 @@ def category(name_or_alias):
     per_page = admin.per_page
     pagination = Post.query.with_parent(category).order_by(
         Post.create_time.desc()).paginate(per_page=per_page)
-    return render_template('blog/category.html', category=category, pagination=pagination)
+    return render_template('blog/_category.html', category=category, pagination=pagination)

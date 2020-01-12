@@ -28,7 +28,7 @@ def login():
             return redirect(next_url)
         else:
             flash('登录失败！请检查用户名或密码', 'error')
-    return render_template('login/login.html', form=form)
+    return render_template('login/_login.html', form=form)
 
 
 @web.route('/logout')
