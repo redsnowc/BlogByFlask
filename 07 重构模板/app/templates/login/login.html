@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <meta name="robots" content="noindex, noarchive">
+{% endblock %}
+
+{% block title %}登录 - {{ admin.blog_title }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container d-flex flex-column justify-content-center min-vh-100">
+        <!-- 错误提示框开始 -->
+        {% if form.errors.items() %}
+            <div class="login-error">
+                {% for _, errors in form.errors.items() %}
+                    {% for error in errors %}
+                        <strong>错误：</strong>{{ error }}<br>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="login-{{ category }}">
+                        {% if category == 'error' %}
+                            <strong>错误：</strong>{{ message }}
+                        {% else %}
+                            {{ message }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <!-- 错误提示框结束 -->
+
+        <!-- 登录表单开始 -->
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">{{ admin.blog_title }}</h5>
+                <p>WELCOME BACK</p>
+                <form class="text-left login-form" action="{{ url_for('web.login', next=request.args.get('next')) }}"
+                      method="post">
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        <label for="username" class="d-none">用户名</label>
+                        <input class="form-control" type="text" id="username" name="username" placeholder="用户名">
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="d-none">密码</label>
+                        <input class="form-control" type="password" id="password" name="password" placeholder="密码">
+                    </div>
+                    <div class="form-group form-check">
+                        <input class="form-check-input" type="checkbox" id="remember" name="remember">
+                        <label class="form-check-label" for="remember">记住我</label>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="登录" id="loginBtn">
+                </form>
+            </div>
+            <div class="card-footer text-muted text-left">
+                <a class="small" href="{{ url_for('web.index') }}">返回首页</a>
+            </div>
+        </div>
+        <!-- 登录表单结束 -->
+    </div>
+{% endblock %}
