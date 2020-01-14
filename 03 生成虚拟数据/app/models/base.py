@@ -17,5 +17,6 @@ class Base(db.Model):
         """
         for key, value in attrs_dict.items():
             if key != 'id' and hasattr(self, key):
-                setattr(self, key, value)
+                if value:
+                    setattr(self, key, value)
 
