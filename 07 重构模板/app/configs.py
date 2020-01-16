@@ -19,6 +19,7 @@ class DevelopmentConfig(BaseConfig):
     开发环境配置类
     """
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
+    SEND_FILE_MAX_AGE_DEFAULT = timedelta(seconds=1)
 
 
 class TestConfig(BaseConfig):
