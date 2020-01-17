@@ -197,7 +197,8 @@
                 {# 如果有下一页则下一页按钮可点击，否则不可用 #}
                 {% if pagination.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="{{ url_for(endpoint, page=pagination.page + 1, **kwargs) }}" aria-label="Next">
+                        <a class="page-link" href="{{ url_for(endpoint, page=pagination.page + 1, **kwargs) }}"
+                           aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -231,4 +232,23 @@
             {{ render_pagination(pagination, endpoint, **kwargs) }}
         </div>
     </div>
+{% endmacro %}
+
+{% macro render_csrf_btn(endpoint, form_class, btn_class, btn_text, btn_kind) %}
+    {#
+        渲染一个可以执行 POST 跳转且被 CSRF 保护的按钮
+        :param endpoint: 路由端点
+        :param form_class: 表单 class
+        :param btn_class: 按钮 class
+        :param btn_text: 按钮文本
+        :param btn_kind: 判断按钮的种类，如果是 danger，渲染出一个点击会弹出确认框的按钮
+    #}
+    <form class="{{ form_class }}" action="{{ url_for(endpoint, **kwargs) }}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        {% if btn_kind == 'danger' %}
+            <button type="submit" class="{{ btn_class }}" onclick="return confirm('是否确认操作？');">{{ btn_text }}</button>
+        {% else %}
+            <button type="submit" class="{{ btn_class }}">{{ btn_text }}</button>
+        {% endif %}
+    </form>
 {% endmacro %}

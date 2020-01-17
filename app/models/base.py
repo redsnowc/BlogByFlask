@@ -17,5 +17,7 @@ class Base(db.Model):
         """
         for key, value in attrs_dict.items():
             if key != 'id' and hasattr(self, key):
+                if not value:
+                    value = None
                 setattr(self, key, value)
 

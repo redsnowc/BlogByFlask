@@ -5,7 +5,7 @@ from flask import Flask
 from datetime import datetime
 
 from app.configs import configs
-from app.libs.extensions import db, migrate, get_login_manager
+from app.libs.extensions import db, migrate, get_login_manager, csrf_protect
 from app.models import Post, Category, post_category_middle, Comment, Admin, Link
 from app.libs.fake_data import FakeData
 
@@ -35,6 +35,7 @@ def register_extensions(app: Flask):
     migrate.init_app(app, db)
     login_manager = get_login_manager()
     login_manager.init_app(app)
+    csrf_protect.init_app(app)
 
 
 def register_blueprints(app: Flask):

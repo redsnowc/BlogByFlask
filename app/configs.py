@@ -2,6 +2,8 @@ import os
 
 from datetime import timedelta
 
+from app.models import Admin, Category, Comment, Link, Post
+
 
 class BaseConfig:
     """
@@ -13,12 +15,16 @@ class BaseConfig:
     REMEMBER_COOKIE_DURATION = timedelta(days=31)
     PERMANENT_SESSION_LIFETIME = timedelta(days=3)
 
+    # AJAX 请求校验查询模型名称使用
+    MODELS = {'Admin': Admin, 'Category': Category, 'Comment': Comment, 'Link': Link, 'Post': Post}
+
 
 class DevelopmentConfig(BaseConfig):
     """
     开发环境配置类
     """
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
+    SEND_FILE_MAX_AGE_DEFAULT = timedelta(seconds=1)
 
 
 class TestConfig(BaseConfig):
