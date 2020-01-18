@@ -5,7 +5,8 @@ from flask_login import login_required
 
 from app.web import web
 from app.forms.category import NewCategoryForm, EditCategoryForm
-from app.models import Category
+from app.forms.link import NewLinkForm, EditLinkForm
+from app.models import Category, Link
 from app.libs.extensions import db
 from app.libs.helpers import get_form_error_items, check_ajax_request_data
 
@@ -55,9 +56,6 @@ def get_category():
     if result.__class__.__name__ != 'Category':
         return json.dumps({'code': 0, 'msg': '指定查询模型与该查询不符'})
 
-    if result.id == 1:
-        return json.dumps({'code': 0, 'msg': '指定查询 id 有误'})
-
     successful_data = {'code': 1, 'data': {}}
     successful_data['data']['id'] = result.id
     successful_data['data']['name'] = result.name
@@ -87,9 +85,6 @@ def update_category():
     if result.__class__.__name__ != 'Category':
         return json.dumps({'code': 0, 'msg': '指定查询模型与该查询不符'})
 
-    if result.id == 1:
-        return json.dumps({'code': 0, 'msg': '默认分类无法修改'})
-
     if form.validate_on_submit():
         with db.auto_commit():
             result.set_attr(form.data)
@@ -109,3 +104,22 @@ def delete_category(category_id):
     category = Category.query.get_or_404(category_id)
     category.delete()
     return redirect(url_for('web.manage_category'))
+
+
+@web.route('/admin/link', methods=['POST', 'GET'])
+@login_required
+def manage_link():
+    """后台链接管理管理视图"""
+    form = NewLinkForm(request.form)
+
+    if form.validate_on_submit():
+        with db.auto_commit():
+            link = Link()
+            link.set_attr(form.data)
+            db.session.add(link)
+        return redirect(url_for('web.manage_category'))
+
+    fields_names, fields_errors = get_form_error_items(form)
+    return render_template('admin/manage_link.html', form=form,
+                           fields_errors=fields_errors,
+                           fields_names=fields_names)
