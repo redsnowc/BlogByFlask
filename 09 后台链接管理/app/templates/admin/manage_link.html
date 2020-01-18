@@ -38,7 +38,7 @@
             </div>
             <!-- 新增链接表单结束 -->
 
-            <!-- 分类信息展示表格 -->
+            <!-- 链接信息展示表格 -->
             <table class="table col-12">
                 <thead>
                 <tr>
@@ -48,25 +48,31 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for link in links|reverse %}
-                    <tr data-id="{{ link.id }}">
-                        <td><a href="{{ link.url }}" target="_blank">{{ link.name }}</a></td>
-                        <td>{{ link.tag|switch_link_tag }}</td>
-                        <td>
-                            <button type="button" class="btn btn-warning btn-sm edit-btn">修改</button>
-                            {{ render_csrf_btn('web.delete_link',
+                {% if links %}
+                    {% for link in links|reverse %}
+                        <tr data-id="{{ link.id }}">
+                            <td><a href="{{ link.url }}" target="_blank">{{ link.name }}</a></td>
+                            <td>{{ link.tag|switch_link_tag }}</td>
+                            <td>
+                                <button type="button" class="btn btn-warning btn-sm edit-btn">修改</button>
+                                {{ render_csrf_btn('web.delete_link',
                                                     'form-inline d-inline mx-sm-2',
                                                     'btn btn-danger btn-sm',
                                                     '删除',
                                                     'danger',
                                                     link_id = link.id) }}
-                        </td>
+                            </td>
+                        </tr>
+                        <tr class="spacer"></tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5">暂无链接</td>
                     </tr>
-                    <tr class="spacer"></tr>
-                {% endfor %}
+                {% endif %}
                 </tbody>
             </table>
-            <!-- 分类信息展示表格结束 -->
+            <!-- 链接信息展示表格结束 -->
         </div>
     </div>
 {% endblock %}
