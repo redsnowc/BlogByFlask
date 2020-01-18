@@ -1,0 +1,221 @@
+body {
+    background: #f8f8f8;
+}
+
+.hide {
+    display: None;
+}
+
+/* 导航开始 */
+.navbar {
+    background: linear-gradient(to right top, #006bc9, #008ecc, #00b0cc, #00ccc5, #00b593);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 200ms ease-in;
+    padding: 1rem 1rem;
+}
+
+.fixed_top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+.navbar-transparent {
+    background: none !important;
+    box-shadow: none;
+}
+/* 导航结束 */
+
+/* 巨幕开始 */
+.jumbotron {
+    background: linear-gradient(to right top, #006bc9, #008ecc, #00b0cc, #00ccc5, #00b593);
+    color: #ffffff;
+    overflow: hidden;
+}
+
+/* 分类页巨幕高度 */
+.category-jumbotron {
+    height: 30rem;
+}
+
+.jumbotron .display-2 {
+    text-align: center;
+    font-weight: bold;
+}
+
+.jumbotron .display-4 {
+    text-align: center;
+    font-size: 3rem;
+}
+
+.jumbotron .lead {
+    text-align: center;
+}
+
+.jumbotron .link-list {
+    display: flex;
+    list-style: none;
+    padding-inline-start: unset;
+}
+
+.jumbotron .link-list a {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+}
+
+.jumbotron .link-list a:hover {
+    text-decoration: #ffffff;
+    opacity: .6;
+}
+
+.jumbotron .link-list a svg {
+    height: 20px;
+}
+/* 巨幕结束 */
+
+/* 文章摘要开始 */
+.posts-container {
+    box-shadow: 0 30px 50px 0 rgba(1, 1, 1, .15);
+    position: relative;
+    top: -150px;
+    background: #f8f8f8;
+}
+
+.posts-container .header {
+    height: 150px;
+    position: relative;
+    margin-bottom: 4rem;
+}
+
+hr {
+    width: 40px;
+    margin-top: 6rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.post-container {
+    margin: 0 auto 4rem auto;
+}
+
+.post-title {
+    display: block;
+    color: #333333;
+    margin-bottom: 1rem;
+    z-index: 2;
+}
+
+.post-title:hover {
+    color: #00b593;
+    text-decoration: none;
+}
+
+.post-meta {
+    font-size: .8rem;
+    color: #888888;
+    margin-bottom: 2rem;
+    z-index: 2;
+}
+
+.meta-link {
+    color: #888888;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom 100ms ease-in-out;
+}
+
+.meta-link:hover {
+    text-decoration: none;
+    color: #333333;
+    border-bottom: 1px solid #333333;
+}
+
+.meta-divider {
+    padding: 0 8px;
+}
+
+.post-description {
+    margin-bottom: 1.5rem;
+    color: #444444;
+    line-height: 1.88rem;
+
+}
+
+.post-container .btn {
+    border-radius: unset;
+    border: 1px solid #00b593;
+    padding: .575rem 2rem;
+    font-size: .8rem;
+    color: #00b593;
+}
+
+.post-container .btn:hover {
+    box-shadow: 0 10px 20px 0 rgba(1, 1, 1, .15);
+    background: #00b593;
+    color: #fff;
+}
+
+.post-first {
+    position: absolute;
+    font-size: 12rem;
+    top: -7rem;
+    left: -3rem;
+    z-index: 1;
+    color: rgba(0, 0, 0, .07);
+}
+/* 文章摘要结束 */
+
+/* 分页器开始 */
+.pagination {
+    margin-bottom: 2rem;
+}
+
+.page-link {
+    color: #00b593;
+}
+
+.page-link:hover {
+    color: #008563;
+}
+
+.page-item.active .page-link {
+    background: #00b593;
+    border-color: #00b593;
+}
+/* 分页器结束 */
+
+/* 页脚开始 */
+footer {
+    margin-bottom: 4rem;
+}
+
+footer p {
+    margin-bottom: .3rem;
+    text-align: center;
+    color: #aaaaaa;
+    font-weight: lighter;
+}
+
+.footer_title {
+    font-size: 1.5rem;
+}
+/* 页脚结束 */
+
+/* 返回顶部按钮开始 */
+.toTop {
+    position: fixed;
+    right: 0;
+    bottom: 1.5rem;
+}
+
+.toTop svg {
+    height: 2rem;
+}
+/* 返回顶部按钮结束 */
