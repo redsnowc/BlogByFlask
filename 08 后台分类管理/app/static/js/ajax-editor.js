@@ -135,7 +135,7 @@ function AjaxEditor(option) {
                 // 2 = 表单验证错误
                 // 0 = 发送的请求数据验证失败
                 if (data.code === 2) {
-                    formErrorMsg = data.msg
+                    formErrorMsg = data.msg;
                 } else if (data.code === 0) {
                     ajaxErrorMsg = data.msg;
                 } else {
@@ -165,7 +165,7 @@ function AjaxEditor(option) {
 
                     for (let fieldName in formErrorMsg) {
                         fieldNameArr.push(fieldName);
-                        fieldErrorArr.push(formErrorMsg[fieldName]);
+                        fieldErrorArr.push(...formErrorMsg[fieldName]);
                     }
 
                     errorMsgStr = fieldErrorArr.join('<br>');
@@ -206,7 +206,8 @@ function AjaxEditor(option) {
             this.$origTr.css('transform', 'scale(1.1)');
             this.$formTr = this.$(this.createEditForm(this.recordData));
             this.$origTr.after(this.$formTr);
-
+            // 表单创建成功发布事件，供 select 选择列表设置 <option> selected
+            this.$document.trigger('editFormCreated');
 
             this.$cancelBtn = this.$('#cancelBtn');
             this.$confirmBtn = this.$('#confirmBtn');
