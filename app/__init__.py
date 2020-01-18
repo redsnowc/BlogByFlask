@@ -8,6 +8,7 @@ from app.configs import configs
 from app.libs.extensions import db, migrate, get_login_manager, csrf_protect
 from app.models import Post, Category, post_category_middle, Comment, Admin, Link
 from app.libs.fake_data import FakeData
+from app.libs.custom_filters import switch_link_tag
 
 
 def create_app(config: str = 'development') -> Flask:
@@ -22,6 +23,7 @@ def create_app(config: str = 'development') -> Flask:
     register_blueprints(app)
     register_cli(app)
     register_template_context(app)
+    add_template_filters(app)
     return app
 
 
@@ -158,3 +160,12 @@ def register_template_context(app: Flask):
         links = Link.query.all()
         current_year = datetime.now().year
         return {"admin": admin, "categories": categories, "links": links, "current_year": current_year}
+
+
+def add_template_filters(app: Flask):
+    """
+    注册自定义模板验证器
+    :param app: Flask 核心对象
+    :return: None
+    """
+    app.add_template_filter(switch_link_tag)

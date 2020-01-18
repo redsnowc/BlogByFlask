@@ -8,5 +8,8 @@ class Link(Base):
     """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(60))
-    tag = db.Column(db.String(10))
     url = db.Column(db.String(256))
+    tag = db.Column(db.Enum(
+        'weixin', 'weibo', 'douban', 'zhihu', 'google', 'linkedin', 'twitter',
+        'facebook', 'github', 'telegram', 'other', 'friendLink'
+    ))

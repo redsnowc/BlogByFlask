@@ -1,0 +1,91 @@
+{% extends 'admin/admin_base.html' %}
+{% from 'macros.html' import render_admin_table_tip, render_csrf_btn %}
+
+{% block title %}链接管理 - {{ admin.blog_title }}{% endblock %}
+
+{% block content %}
+    <div class="ajax_error fixed_top d-none" id="ajaxError"></div>
+    <div class="mask d-none" id="mask"></div>
+    <div class="container content-container">
+        <div class="row justify-content-center">
+            <!-- 渲染页面标题及相关提示 -->
+            {{ render_admin_table_tip('链接管理', links, '标签为其它以及友情链接的链接不会被在首页巨幕上显示') }}
+
+            <!-- 新增链接表单 -->
+            <div class="col-12 inline-form-container">
+                <form action="{{ url_for('web.manage_link') }}" method="post" class="form-inline">
+                    {{ form.csrf_token }}
+                    <label class="sr-only" for="linkName">链接名称</label>
+                    <input class="form-control my-1 mr-sm-2 {% if 'name' in fields_names %}is-invalid{% endif %}"
+                           type="text"
+                           placeholder="链接名称" name="name" id="linkName"
+                           value="{{ form.name.data }}">
+                    <label class="sr-only" for="linkUrl">链接地址</label>
+                    <input class="form-control my-1 {% if 'url' in fields_names %}is-invalid{% endif %}" type="text"
+                           placeholder="链接地址" name="url" id="linkUrl"
+                           value="{{ form.url.data }}">
+                    {{ form.tag.label(class='my-1 mr-sm-2 ml-2') }}
+                    {{ form.tag }}
+                    <button type="submit" class="btn btn-info my-1">添加链接</button>
+                </form>
+                {% if fields_errors %}
+                    <div class="text-danger inline-form-new-error small">
+                        {% for error in fields_errors %}
+                            {{ error }}<br>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <!-- 新增链接表单结束 -->
+
+            <!-- 分类信息展示表格 -->
+            <table class="table col-12">
+                <thead>
+                <tr>
+                    <th class="small text-muted font-weight-bold" scope="col">链接</th>
+                    <th class="small text-muted font-weight-bold" scope="col">标签</th>
+                    <th class="small text-muted font-weight-bold" scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for link in links|reverse %}
+                    <tr data-id="{{ link.id }}">
+                        <td><a href="{{ link.url }}" target="_blank">{{ link.name }}</a></td>
+                        <td>{{ link.tag|switch_link_tag }}</td>
+                        <td>
+                            <button type="button" class="btn btn-warning btn-sm edit-btn">修改</button>
+                            {{ render_csrf_btn('web.delete_link',
+                                                    'form-inline d-inline mx-sm-2',
+                                                    'btn btn-danger btn-sm',
+                                                    '删除',
+                                                    'danger',
+                                                    link_id = link.id) }}
+                        </td>
+                    </tr>
+                    <tr class="spacer"></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <!-- 分类信息展示表格结束 -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{{ url_for('static', filename='3rd/zepto.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ajax-editor.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/manage-link.js') }}"></script>
+    <script>
+        // 实例 AjaxEditor 对象并传递相应的参数
+        let ajaxEditor = new AjaxEditor({
+            csrf_token: '{{ csrf_token() }}',
+            modelName: 'Link',
+            get_record_url: '{{ url_for('web.get_link') }}',
+            update_record_url: '{{ url_for('web.update_link') }}',
+            createEditForm: createLinkEditForm,
+            rebuildOrigTr: rebuildLinkOrigTr,
+        });
+        // 执行初始化方法绑定事件并设置好请求头
+        ajaxEditor.init();
+    </script>
+{% endblock %}
