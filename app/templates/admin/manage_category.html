@@ -1,5 +1,5 @@
 {% extends 'admin/admin_base.html' %}
-{% from 'macros.html' import render_csrf_btn %}
+{% from 'macros.html' import render_csrf_btn, render_admin_table_tip %}
 
 {% block title %}分类管理 - {{ admin.blog_title }}{% endblock %}
 
@@ -8,64 +8,42 @@
     <div class="mask d-none" id="mask"></div>
     <div class="container content-container">
         <div class="row justify-content-center">
-            <!-- 管理页面标题及相关提示 -->
-            <div class="table_tips col-12">
-                <h3>分类管理 ({{ categories|length }})</h3>
-                <div class="tip d-flex align-items-center">
-                    <svg t="1578916258933" class="icon" viewBox="0 0 1038 1024" version="1.1"
-                         xmlns="http://www.w3.org/2000/svg" p-id="19816" width="20">
-                        <path d="M519.013699 519.013699m-308.60274 0a308.60274 308.60274 0 1 0 617.205479 0 308.60274 308.60274 0 1 0-617.205479 0Z"
-                              fill="#505050" p-id="19817"></path>
-                        <path d="M652.273973 883.726027H385.753425a21.041096 21.041096 0 0 0 0 42.082192h266.520548a21.041096 21.041096 0 0 0 0-42.082192zM575.123288 981.917808H462.90411a21.041096 21.041096 0 0 0 0 42.082192h112.219178a21.041096 21.041096 0 0 0 0-42.082192zM519.013699 154.30137a21.041096 21.041096 0 0 0 21.041096-21.041096V21.041096a21.041096 21.041096 0 0 0-42.082192 0v112.219178a21.041096 21.041096 0 0 0 21.041096 21.041096zM1016.986301 497.972603h-112.219178a21.041096 21.041096 0 0 0 0 42.082192h112.219178a21.041096 21.041096 0 0 0 0-42.082192zM133.260274 497.972603H21.041096a21.041096 21.041096 0 0 0 0 42.082192h112.219178a21.041096 21.041096 0 0 0 0-42.082192zM821.444384 264.977534l79.324931-79.395068a21.041096 21.041096 0 0 0-29.738082-29.738082l-79.324932 79.395068a21.041096 21.041096 0 0 0 29.738083 29.738082zM216.583014 264.977534a21.041096 21.041096 0 0 0 29.738082-29.738082L166.996164 155.844384a21.041096 21.041096 0 1 0-29.738082 29.738082z"
-                              fill="#505050" p-id="19818"></path>
-                        <path d="M519.013699 519.013699m-266.520548 0a266.520548 266.520548 0 1 0 533.041096 0 266.520548 266.520548 0 1 0-533.041096 0Z"
-                              fill="#FFCF18" p-id="19819"></path>
-                    </svg>
-                    <p class="text-muted small">默认分类不可删除，无分类文章会被自动移至默认分类下</p>
-                </div>
-                <div class="tip d-flex align-items-center">
-                    <svg t="1578916258933" class="icon" viewBox="0 0 1038 1024" version="1.1"
-                         xmlns="http://www.w3.org/2000/svg" p-id="19816" width="20">
-                        <path d="M519.013699 519.013699m-308.60274 0a308.60274 308.60274 0 1 0 617.205479 0 308.60274 308.60274 0 1 0-617.205479 0Z"
-                              fill="#505050" p-id="19817"></path>
-                        <path d="M652.273973 883.726027H385.753425a21.041096 21.041096 0 0 0 0 42.082192h266.520548a21.041096 21.041096 0 0 0 0-42.082192zM575.123288 981.917808H462.90411a21.041096 21.041096 0 0 0 0 42.082192h112.219178a21.041096 21.041096 0 0 0 0-42.082192zM519.013699 154.30137a21.041096 21.041096 0 0 0 21.041096-21.041096V21.041096a21.041096 21.041096 0 0 0-42.082192 0v112.219178a21.041096 21.041096 0 0 0 21.041096 21.041096zM1016.986301 497.972603h-112.219178a21.041096 21.041096 0 0 0 0 42.082192h112.219178a21.041096 21.041096 0 0 0 0-42.082192zM133.260274 497.972603H21.041096a21.041096 21.041096 0 0 0 0 42.082192h112.219178a21.041096 21.041096 0 0 0 0-42.082192zM821.444384 264.977534l79.324931-79.395068a21.041096 21.041096 0 0 0-29.738082-29.738082l-79.324932 79.395068a21.041096 21.041096 0 0 0 29.738083 29.738082zM216.583014 264.977534a21.041096 21.041096 0 0 0 29.738082-29.738082L166.996164 155.844384a21.041096 21.041096 0 1 0-29.738082 29.738082z"
-                              fill="#505050" p-id="19818"></path>
-                        <path d="M519.013699 519.013699m-266.520548 0a266.520548 266.520548 0 1 0 533.041096 0 266.520548 266.520548 0 1 0-533.041096 0Z"
-                              fill="#FFCF18" p-id="19819"></path>
-                    </svg>
-                    <p class="text-muted small">分类别名是在 URL 中使用的别称，如果你的分类名为中文，最好为其设置一个英文别名</p>
-                </div>
-            </div>
-            <!-- 管理页面标题及相关提示结束 -->
+            <!-- 渲染页面标题及相关提示 -->
+            {{ render_admin_table_tip('分类管理', categories, '默认分类不可删除，无分类文章会被自动移至默认分类下', '分类别名是在 URL 中使用的别称，如果你的分类名为中文，最好为其设置一个英文别名') }}
 
             <!-- 新增分类表单 -->
-            <div class="col-12 form-container">
-                <form class="form-inline d-flex align-items-center new-form"
-                      action="{{ url_for('web.manage_category') }}" method="post">
+            <div class="col-12 inline-form-container">
+                <form action="{{ url_for('web.manage_category') }}" method="post">
                     {{ form.csrf_token }}
-                    <div class="form-group">
-                        <label>
+                    <div class="form-row align-items-center">
+                        <div class="col-sm-3 my-1">
+                            <label class="sr-only" for="categoryName">分类名</label>
                             <input class="form-control {% if 'name' in fields_names %}is-invalid{% endif %}" type="text"
-                                   placeholder="分类名" name="name"
+                                   placeholder="分类名" name="name" id="categoryName"
                                    value="{{ form.name.data }}">
-                        </label>
-                    </div>
-                    <div class="form-group mx-sm-3">
-                        <label>
+                        </div>
+                        <div class="col-sm-3 my-1">
+                            <label class="sr-only" for="categoryAlias">分类名</label>
                             <input class="form-control {% if 'alias' in fields_names %}is-invalid{% endif %}"
-                                   type="text" placeholder="别名" name="alias"
+                                   type="text"
+                                   placeholder="分类别名" name="alias" id="categoryAlias"
                                    value="{{ form.alias.data }}">
-                        </label>
+                        </div>
+                        <div class="col-auto my-1">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="categoryShow" name="show" checked>
+                                <label class="form-check-label" for="categoryShow">
+                                    显示
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-auto my-1">
+                            <button type="submit" class="btn btn-info">添加分类</button>
+                        </div>
                     </div>
-                    <div class="form-group mx-2">
-                        <label class="form-check-label">
-                            <input class="form-check-inline" type="checkbox" name="show" checked>
-                        </label>显示
-                    </div>
-                    <button type="submit" class="btn btn-info mb-auto mx-sm-3">添加分类</button>
                 </form>
                 {% if fields_errors %}
-                    <div class="text-danger new-error small">
+                    <div class="text-danger inline-form-new-error small">
                         {% for error in fields_errors %}
                             {{ error }}<br>
                         {% endfor %}
@@ -106,11 +84,13 @@
                             {% if category.id != 1 %}
                                 <button type="button" class="btn btn-warning btn-sm edit-btn">修改</button>
                                 {{ render_csrf_btn('web.delete_category',
-                                                    'form-inline d-inline mx-sm-2 mb-auto',
+                                                    'form-inline d-inline mx-sm-2',
                                                     'btn btn-danger btn-sm',
                                                     '删除',
                                                     'danger',
                                                     category_id = category.id) }}
+                            {% else %}
+                                <button type="button" class="btn btn-warning btn-sm edit-btn">修改</button>
                             {% endif %}
                         </td>
                     </tr>

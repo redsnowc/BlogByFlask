@@ -11,6 +11,14 @@ a:hover {
     color: #2980b9;
 }
 
+.btn {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    box-shadow: unset;
+}
+
 /* 导航栏开始 */
 .fixed_top {
     position: fixed;
@@ -52,8 +60,8 @@ a:hover {
 
 /* 管理页面标题及相关提示开始 */
 
-/* 新建表单开始 */
-.form-container {
+/* 表单开始 */
+.inline-form-container {
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.1);
     background: #fff;
     padding-top: 1rem;
@@ -61,20 +69,18 @@ a:hover {
     margin-bottom: 30px;
 }
 
-.new-form .btn {
-    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.1);
-}
-
-.new-form .btn:hover {
-    box-shadow: unset;
-}
-
-.new-error {
+.inline-form-new-error,
+.inline-form-edit-error {
     margin-top: 1rem;
     margin-left: .5rem;
     line-height: 20px;
 }
-/* 新建表单结束 */
+
+.inline-form-edit-error {
+    /* 编辑表单错误 */
+    padding-left: 2px;
+}
+/* 表单结束 */
 
 /* 内容展示表格开始 */
 .table td,
@@ -122,11 +128,6 @@ tbody tr {
     bottom: 0;
     background: rgba(0, 0, 0, .2);
     z-index: 1031;
-}
-
-.edit-error {
-    /* 编辑表单错误 */
-    padding-left: 5px;
 }
 
 #formTr form {
