@@ -84,10 +84,10 @@
                             {% if category.id != 1 %}
                                 <button type="button" class="btn btn-warning btn-sm edit-btn">修改</button>
                                 {{ render_csrf_btn('web.delete_category',
-                                                    'form-inline d-inline mx-sm-2',
-                                                    'btn btn-danger btn-sm',
+                                                    'mx-sm-2',
+                                                    'btn-danger',
                                                     '删除',
-                                                    'danger',
+                                                    True,
                                                     category_id = category.id) }}
                             {% else %}
                                 <button type="button" class="btn btn-warning btn-sm edit-btn">修改</button>
