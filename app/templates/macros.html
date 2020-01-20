@@ -259,21 +259,21 @@
     </div>
 {% endmacro %}
 
-{% macro render_csrf_btn(endpoint, form_class, btn_class, btn_text, btn_kind) %}
+{% macro render_csrf_btn(endpoint, margin, btn_kind, btn_text, is_danger=False) %}
     {#
         渲染一个可以执行 POST 跳转且被 CSRF 保护的按钮
         :param endpoint: 路由端点
-        :param form_class: 表单 class
-        :param btn_class: 按钮 class
+        :param margin: 外边距 Bootstrap 内建 class，比如 mx-2 mr-1 ml-1 ...
+        :param btn-kind: 按钮种类 BootStrap 内建 clss 比如 btn-info btn-danger ...
         :param btn_text: 按钮文本
-        :param btn_kind: 判断按钮的种类，如果是 danger，渲染出一个点击会弹出确认框的按钮
+        :param is_danger: True or False 是否为危险操作，如果是，渲染出一个点击会弹出确认框的按钮
     #}
-    <form class="{{ form_class }}" action="{{ url_for(endpoint, **kwargs) }}" method="post">
+    <form class="form-inline d-inline {{ margin }}" action="{{ url_for(endpoint, **kwargs) }}" method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        {% if btn_kind == 'danger' %}
-            <button type="submit" class="{{ btn_class }}" onclick="return confirm('是否确认操作？');">{{ btn_text }}</button>
+        {% if is_danger %}
+            <button type="submit" class="btn btn-sm {{ btn_kind }}" onclick="return confirm('是否确认操作？');">{{ btn_text }}</button>
         {% else %}
-            <button type="submit" class="{{ btn_class }}">{{ btn_text }}</button>
+            <button type="submit" class="btn btn-sm {{ btn_kind }}">{{ btn_text }}</button>
         {% endif %}
     </form>
 {% endmacro %}

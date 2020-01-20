@@ -17,6 +17,7 @@ class BaseConfig:
 
     # AJAX 请求校验查询模型名称使用
     MODELS = {'Admin': Admin, 'Category': Category, 'Comment': Comment, 'Link': Link, 'Post': Post}
+    ADMIN_PER_PAGE = 20
 
 
 class DevelopmentConfig(BaseConfig):

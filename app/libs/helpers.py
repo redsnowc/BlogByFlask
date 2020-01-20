@@ -1,7 +1,9 @@
 import json
+from urllib.parse import urlparse, urljoin
 
 from flask_wtf import FlaskForm
-from flask import current_app
+from flask import current_app, request, redirect, url_for
+from werkzeug import Response
 from werkzeug.datastructures import ImmutableMultiDict
 from typing import Union
 
@@ -81,3 +83,28 @@ def check_ajax_request_data(data: Union[dict, ImmutableMultiDict]):
         return json.dumps(failed_data)
 
     return record
+
+
+def is_safe_url(target: str) -> bool:
+    """
+    校验 URL 是否属于本站
+    :param target: 需要校验的 URL
+    :return True or False
+    """
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
+
+def redirect_back(default_endpoint: str = 'web.index', **kwargs) -> Response:
+    """
+    执行跳转操作，可用于各种 POST 操作之后的跳转
+    :param default_endpoint: 默认 endpoint，如果获取不到 `next` 以及 `request.referrer` 或 URL 校验失败之后的默认跳转页面
+    :param **kwargs 视图可能所需的参数
+    """
+    for target in request.args.get('next'), request.referrer:
+        if not target:
+            continue
+        if is_safe_url(target):
+            return redirect(target)
+    return redirect(url_for(default_endpoint, **kwargs))

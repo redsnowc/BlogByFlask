@@ -14,7 +14,7 @@
         /**
          * 处理页面滚动至某一高度的平滑过渡效果
          * @param: targetY 目标高度
-        */
+         */
         const timer = setInterval(function () {
             const currentY = document.documentElement.scrollTop || document.body.scrollTop;
             const distance = targetY > currentY ? targetY - currentY : currentY - targetY;
@@ -27,9 +27,29 @@
         }, 10);
     }
 
+    // 获取时差
+    const timeZoneOffset = new Date().getTimezoneOffset() / 60;
+
+    function toLocalTime(dateStr) {
+        /**
+         * 将 UTC 时间转换为本地时间
+         * @param: dateStr 需要转换的时间字符串，如 2020-1-1 19:45:54
+         */
+        const dateObj = new Date(dateStr);
+        const origHours = dateObj.getHours();
+        dateObj.setHours(origHours - timeZoneOffset);
+        const year = dateObj.getFullYear();
+        const month = dateObj.getMonth() + 1 < 10 ? '0' + (dateObj.getMonth() + 1) : dateObj.getMonth() + 1;
+        const date = dateObj.getDate();
+        const hours = dateObj.getHours();
+        const minutes = dateObj.getMinutes();
+        return `${year}-${month}-${date} ${hours}:${minutes}`
+    }
+
     // 对外暴露，使全局可调用
     $.extend({
         scrollAnimation: scrollAnimation,
+        toLocalTime: toLocalTime,
         globalVal: globalVal
     })
 })(jQuery);

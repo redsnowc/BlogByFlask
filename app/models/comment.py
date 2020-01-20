@@ -16,6 +16,7 @@ class Comment(Base):
     create_time = db.Column(db.DateTime, default=datetime.utcnow)
     from_admin = db.Column(db.Boolean, default=False)
     reviewed = db.Column(db.Boolean, default=False)
+    trash = db.Column(db.Boolean, default=False)
     replied_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
     replied = db.relationship('Comment', remote_side=[id], uselist=False)
     replies = db.relationship('Comment', cascade='all')
