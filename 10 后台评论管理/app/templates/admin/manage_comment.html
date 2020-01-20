@@ -1,5 +1,5 @@
 {% extends 'admin/admin_base.html' %}
-{% from 'macros.html' import render_csrf_btn, render_pagination %}
+{% from 'macros.html' import render_csrf_btn, render_pagination, render_flash_message %}
 
 {% block title %}评论管理 - {{ admin.blog_title }}{% endblock %}
 
@@ -11,18 +11,7 @@
             </div>
 
             {# 渲染 Flash 信息 #}
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} alert-dismissible fade show col-12" role="alert">
-                            <strong>{{ category|upper }}!</strong> {{ message }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+            {{ render_flash_message() }}
 
             <!-- 评论类型切换导航开始 -->
             <ul class="nav col-12 mb-3">
