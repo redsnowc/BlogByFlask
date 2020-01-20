@@ -246,49 +246,58 @@ def review_comment(comment_id, action):
     with db.auto_commit():
         db.session.add(comment)
     flash(flash_message, 'success')
-    return redirect_back(default_endpoint='web.manage_comment')
+    return redirect_back()
 
 
-@web.route('/admin/trash-comment/<int:comment_id>/<any(do, undo):action>', methods=['POST'])
+@web.route('/admin/trash-record/<any(Comment, Post):model_name>/<int:record_id>/<any(do, undo):action>',
+           methods=['POST'])
 @login_required
-def trash_comment(comment_id, action):
+def trash_record(model_name, record_id, action):
     """
-    移动评论至回收站视图，软删除
-    :param comment_id: 评论 id
+    移动评论或文章至回收站视图，软删除
+    :param model_name: 数据表模型名称，model_name = Comment or Post
+    :param record_id: 记录 id
     :param action: 执行方式 action = do or undo
     """
-    comment = Comment.query.get_or_404(comment_id)
+    model = current_app.config['MODELS'].get(model_name)
+    record = model.query.get_or_404(record_id)
 
     if action == 'do':
-        comment.trash = True
-        flash_message = '评论已被移入回收站'
+        record.trash = True
+        flash_message = '评论已被移入回收站' if model_name == 'Comment' else '文章已被移入回收站'
     else:
-        comment.trash = False
-        flash_message = '评论已被移出回收站'
+        record.trash = False
+        flash_message = '评论已被移出回收站' if model_name == 'Comment' else '文章已被移出回收站'
 
     with db.auto_commit():
-        db.session.add(comment)
+        db.session.add(record)
     flash(flash_message, 'success')
-    return redirect_back(default_endpoint='web.manage_comment')
+    return redirect_back()
 
 
-@web.route('/admin/delete-comment/<int:comment_id>', defaults={'action': 'one'}, methods=['POST'])
-@web.route('/admin/delete-comment/<any(all, one):action>', defaults={'comment_id': None}, methods=['POST'])
+@web.route('/admin/delete-record/<any(Comment, Post):model_name>/<int:record_id>', defaults={'action': 'one'},
+           methods=['POST'])
+@web.route('/admin/delete-record/<any(Comment, Post):model_name>/<any(all, one):action>', defaults={'record_id': None},
+           methods=['POST'])
 @login_required
-def delete_comment(comment_id, action):
+def delete_record(model_name, record_id, action):
     """
-    删除评论视图
-    :param comment_id: 评论 id
+    删除文章或评论视图
+    :param model_name: 数据表模型名称，model_name = Comment or Post
+    :param record_id: 记录 id
     :param action: 执行操作 action = all 删除全部回收站评论
     """
+    model = current_app.config['MODELS'].get(model_name)
     if action == 'all':
         with db.auto_commit():
-            for comment in Comment.query.filter_by(trash=True).all():
-                db.session.delete(comment)
+            for record in model.query.filter_by(trash=True).all():
+                db.session.delete(record)
+        flash('回收站已清空', 'success')
         return redirect_back(default_endpoint='web.manage_comment')
 
-    comment = Comment.query.get_or_404(comment_id)
+    record = model.query.get_or_404(record_id)
     with db.auto_commit():
-        db.session.delete(comment)
-    flash('评论已被删除', 'success')
-    return redirect_back(default_endpoint='web.manage_comment')
+        db.session.delete(record)
+    flash_message = '评论已删除' if model_name == 'Comment' else '文章已删除'
+    flash(flash_message, 'success')
+    return redirect_back()

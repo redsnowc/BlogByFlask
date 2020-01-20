@@ -15,7 +15,7 @@ class BaseConfig:
     REMEMBER_COOKIE_DURATION = timedelta(days=31)
     PERMANENT_SESSION_LIFETIME = timedelta(days=3)
 
-    # AJAX 请求校验查询模型名称使用
+    # 通过模型名称获取数据表模型类
     MODELS = {'Admin': Admin, 'Category': Category, 'Comment': Comment, 'Link': Link, 'Post': Post}
     ADMIN_PER_PAGE = 20
 

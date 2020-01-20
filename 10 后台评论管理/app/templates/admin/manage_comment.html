@@ -35,7 +35,7 @@
                 {% if pagination.total > 1 %}
                     <div class="col-12">
                         <div class="float-right">
-                            {{ render_csrf_btn('web.delete_comment', 'mr-1', 'btn-danger', '清空回收站', True, action='all') }}
+                            {{ render_csrf_btn('web.delete_record', 'mr-1', 'btn-danger', '清空回收站', True, model_name='Comment', action='all') }}
                         </div>
                     </div>
                 {% endif %}
@@ -93,10 +93,10 @@
                                             {{ render_csrf_btn('web.review_comment', 'mr-1', 'btn-dark', '撤销审核', comment_id=comment.id, action='undo') }}
                                         {% endif %}
                                     {% endif %}
-                                    {{ render_csrf_btn('web.trash_comment', 'mr-1', 'btn-warning', '移入回收站', comment_id=comment.id, action='do') }}
+                                    {{ render_csrf_btn('web.trash_record', 'mr-1', 'btn-warning', '移入回收站', model_name='Comment', record_id=comment.id, action='do') }}
                                 {% else %}
-                                    {{ render_csrf_btn('web.trash_comment', 'mr-1', 'btn-info', '移出回收站', comment_id=comment.id, action='undo') }}
-                                    {{ render_csrf_btn('web.delete_comment', 'mr-1', 'btn-danger', '删除', True, comment_id=comment.id) }}
+                                    {{ render_csrf_btn('web.trash_record', 'mr-1', 'btn-warning', '移出回收站', model_name='Comment', record_id=comment.id, action='undo') }}
+                                    {{ render_csrf_btn('web.delete_record', 'mr-1', 'btn-danger', '删除', True, model_name='Comment', record_id=comment.id) }}
                                 {% endif %}
                             </td>
                         </tr>
