@@ -205,7 +205,7 @@ def manage_comment(status):
 
     # 评论的五种不同 query 对象字典
     comments_query_dict = {
-        'all': Comment.query,
+        'all': Comment.query.filter_by(trash=False),
         'unreviewed': Comment.query.filter_by(reviewed=False, trash=False),
         'reviewed': Comment.query.filter_by(reviewed=True, trash=False, from_admin=False),
         'trash': Comment.query.filter_by(trash=True),
