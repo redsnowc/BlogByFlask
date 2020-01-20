@@ -1,0 +1,78 @@
+body {
+    background: linear-gradient(to left top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+    color: #eeeeee;
+    font-size: .8rem;
+}
+
+.card {
+    margin: 0 auto;
+    width: 22rem;
+    box-shadow: 10px 2px 14px 5px rgba(0, 0, 0, 0.2);
+    border-radius: unset;
+    background: rgba(0, 0, 0, .1);
+}
+
+.card .btn {
+    display: block;
+    margin: 0 auto;
+    width: 6rem;
+}
+
+.login-info,
+.login-error {
+    width: 22rem;
+    margin: 0 auto 2rem auto;
+    padding: .7rem 1rem;
+    background: rgba(0, 0, 0, 0.1);
+    box-shadow: 10px 2px 14px 5px rgba(0, 0, 0, 0.2);
+    border-left: 4px solid #dc3232;
+}
+
+.login-info {
+    border-color: #00d0d8;
+}
+
+.login-form {
+    font-size: .9rem;
+    color: #ffffff;
+}
+
+.form-control {
+    background: rgba(0, 0, 0, .2);
+    border: none;
+    color: #f8f8f8;
+}
+
+.form-control:focus {
+    border: none;
+    background: rgba(0, 0, 0, .4);
+    color: #bababa;
+}
+
+.form-control::placeholder {
+    color: #bababa;
+}
+
+.form-check-label {
+    color: #bababa;
+}
+
+.login-form .btn {
+    border: 1px solid #00b593;
+    background: #00b593;
+    color: #FFFFFF;
+    box-shadow: 10px 10px 14px 1px rgba(0, 0, 0, 0.2);
+}
+
+.login-form .btn:hover {
+    box-shadow: none;
+}
+
+.card a {
+    color: #919aa3;
+}
+
+.card a:hover {
+    text-decoration: none;
+    color: #00b593;
+}
