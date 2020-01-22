@@ -1,5 +1,5 @@
 {% extends 'admin/admin_base.html' %}
-{% from 'macros.html' import render_csrf_btn, render_pagination %}
+{% from 'macros.html' import render_csrf_btn, render_pagination, render_flash_message %}
 
 {% block title %}评论管理 - {{ admin.blog_title }}{% endblock %}
 
@@ -11,18 +11,7 @@
             </div>
 
             {# 渲染 Flash 信息 #}
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }} alert-dismissible fade show col-12" role="alert">
-                            <strong>{{ category|upper }}!</strong> {{ message }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+            {{ render_flash_message() }}
 
             <!-- 评论类型切换导航开始 -->
             <ul class="nav col-12 mb-3">
@@ -46,7 +35,7 @@
                 {% if pagination.total > 1 %}
                     <div class="col-12">
                         <div class="float-right">
-                            {{ render_csrf_btn('web.delete_comment', 'mr-1', 'btn-danger', '清空回收站', True, action='all') }}
+                            {{ render_csrf_btn('web.delete_record', 'mr-1', 'btn-danger', '清空回收站', True, model_name='Comment', action='all') }}
                         </div>
                     </div>
                 {% endif %}
@@ -104,10 +93,10 @@
                                             {{ render_csrf_btn('web.review_comment', 'mr-1', 'btn-dark', '撤销审核', comment_id=comment.id, action='undo') }}
                                         {% endif %}
                                     {% endif %}
-                                    {{ render_csrf_btn('web.trash_comment', 'mr-1', 'btn-warning', '移入回收站', comment_id=comment.id, action='do') }}
+                                    {{ render_csrf_btn('web.trash_record', 'mr-1', 'btn-warning', '移入回收站', model_name='Comment', record_id=comment.id, action='do') }}
                                 {% else %}
-                                    {{ render_csrf_btn('web.trash_comment', 'mr-1', 'btn-info', '移出回收站', comment_id=comment.id, action='undo') }}
-                                    {{ render_csrf_btn('web.delete_comment', 'mr-1', 'btn-danger', '删除', True, comment_id=comment.id) }}
+                                    {{ render_csrf_btn('web.trash_record', 'mr-1', 'btn-warning', '移出回收站', model_name='Comment', record_id=comment.id, action='undo') }}
+                                    {{ render_csrf_btn('web.delete_record', 'mr-1', 'btn-danger', '删除', True, model_name='Comment', record_id=comment.id) }}
                                 {% endif %}
                             </td>
                         </tr>
