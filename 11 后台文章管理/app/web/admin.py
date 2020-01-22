@@ -336,6 +336,28 @@ def manage_post(status):
                            posts_info_dict=posts_info_dict, status=status)
 
 
+@web.route('/admin/close-comment/<int:post_id>/<any(do, undo):action>', methods=['POST'])
+@login_required
+def close_comment(post_id, action):
+    """
+    关闭文章评论视图
+    :param post_id: 文章 id
+    :param action: 执行操作，action = do or undo
+    """
+    post = Post.query.get_or_404(post_id)
+    if action == 'do':
+        post.can_comment = False
+        flash_message = f'文章 "{post.title}" 评论功能已关闭'
+    else:
+        post.can_comment = True
+        flash_message = f'文章 "{post.title}" 评论功能已开启'
+
+    with db.auto_commit():
+        db.session.add(post)
+        flash(flash_message, 'success')
+    return redirect_back()
+
+
 @web.route('/admin/new-post', methods=['POST', 'GET'])
 @login_required
 def new_post():

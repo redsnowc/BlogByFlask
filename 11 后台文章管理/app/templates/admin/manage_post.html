@@ -68,6 +68,11 @@
                                 {# 依据文章的不同状态渲染不同的操作按钮 #}
                                 {% if not post.trash %}
                                     <a href="{{ url_for('web.edit_post', post_id=post.id) }}" class="btn btn-sm btn-info mr-1">编辑</a>
+                                    {% if post.can_comment %}
+                                        {{ render_csrf_btn('web.close_comment', 'mr-1', 'btn-dark', '关闭评论', post_id=post.id, action='do') }}
+                                    {% else %}
+                                        {{ render_csrf_btn('web.close_comment', 'mr-1', 'btn-success', '开启评论', post_id=post.id, action='undo') }}
+                                    {% endif %}
                                     {{ render_csrf_btn('web.trash_record', 'mr-1', 'btn-warning', '移入回收站', model_name='Post', record_id=post.id, action='do') }}
                                 {% else %}
                                     {{ render_csrf_btn('web.trash_record', 'mr-1', 'btn-warning', '移出回收站', model_name='Post', record_id=post.id, action='undo') }}
