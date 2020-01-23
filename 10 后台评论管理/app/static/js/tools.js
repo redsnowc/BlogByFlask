@@ -35,7 +35,7 @@
          * 将 UTC 时间转换为本地时间
          * @param: dateStr 需要转换的时间字符串，如 2020-1-1 19:45:54
          */
-        const dateObj = new Date(dateStr);
+        const dateObj = new Date(dateStr.replace(/-/g, '/'));
         const origHours = dateObj.getHours();
         dateObj.setHours(origHours - timeZoneOffset);
         const year = dateObj.getFullYear();
