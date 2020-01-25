@@ -18,6 +18,7 @@ cryptography = "*"
 pypinyin = "*"
 flask-wtf = "*"
 flask-login = "*"
+flask-mail = "*"
 
 [requires]
 python_version = "3.7"

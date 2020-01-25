@@ -26,6 +26,7 @@ body {
     background: none !important;
     box-shadow: none;
 }
+
 /* 导航结束 */
 
 /* 巨幕开始 */
@@ -77,6 +78,7 @@ body {
 .jumbotron .link-list a svg {
     height: 20px;
 }
+
 /* 巨幕结束 */
 
 /* 文章摘要开始 */
@@ -170,6 +172,7 @@ hr {
     z-index: 1;
     color: rgba(0, 0, 0, .07);
 }
+
 /* 文章摘要结束 */
 
 /* 分页器开始 */
@@ -189,6 +192,7 @@ hr {
     background: #00b593;
     border-color: #00b593;
 }
+
 /* 分页器结束 */
 
 /* 页脚开始 */
@@ -206,6 +210,7 @@ footer p {
 .footer_title {
     font-size: 1.5rem;
 }
+
 /* 页脚结束 */
 
 /* 返回顶部按钮开始 */
@@ -218,4 +223,153 @@ footer p {
 .toTop svg {
     height: 2rem;
 }
+
 /* 返回顶部按钮结束 */
+
+
+.post-jumbotron {
+    /* 文章详情页巨幕 */
+    height: 15rem;
+}
+
+/* 文章详情开始 */
+.first-container {
+    box-shadow: 0 30px 40px 0 rgba(1, 1, 1, .15);
+    position: relative;
+    top: -150px;
+    background: #f8f8f8;
+}
+
+.post-header {
+    margin: 5rem auto 0 auto;
+}
+
+.post-title {
+    font-size: 3rem;
+}
+
+#postContent {
+    background: #f8f8f8;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* 文章详情结束 */
+
+.sub-container {
+    /* 下方容器 */
+    box-shadow: 0 30px 50px 0 rgba(1, 1, 1, .15);
+    position: relative;
+    background: #f8f8f8;
+    top: -80px
+}
+
+/* 评论开始展示 */
+.comments-container {
+    margin: 0 auto;
+}
+
+.comments-container p {
+    margin-bottom: .5rem;
+}
+
+.comments-container .item {
+    list-style: none;
+}
+
+.comments-container hr {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.comment-container {
+    margin-bottom: 2rem;
+}
+
+.comment-author {
+    font-size: 1.2rem;
+}
+
+.comment-content {
+    line-height: 2rem;
+}
+
+.reply-link {
+    color: #00b593;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #00b593;
+    transition: border-bottom-color 500ms;
+}
+
+.reply-link:hover {
+    color: #00b593;
+    text-decoration: none;
+    border-bottom-color: transparent;
+}
+
+.reply-content {
+    line-height: 2rem;
+    font-size: .9rem;
+}
+
+/* 评论展示结束 */
+
+/* 回复表单错误信息页面开始 */
+.reply-errors {
+    margin: 100px auto 0;
+    background: #f8f8f8;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.13);
+}
+
+.error-msg {
+    margin-top: 1rem;
+}
+/* 回复表单错误信息页面结束 */
+
+/* 评论表单开始 */
+#commentForm {
+    position: relative;
+}
+
+#commentForm .close {
+    position: absolute;
+    right: 1px;
+    top: -2px;
+}
+
+.form-container {
+    margin: 0 auto;
+}
+
+.form-container .form-control {
+    border-radius: unset;
+    background: #f8f8f8;
+}
+
+.form-container .form-control:focus {
+    border-color: #ced4da;
+    box-shadow: none;
+}
+
+.form-container .btn {
+    background: #00b593;
+    border: 1px solid #00b593;
+    border-radius: unset;
+    color: #fff;
+}
+
+.form-container .btn:hover {
+    box-shadow: 0 10px 20px 0 rgba(1, 1, 1, .15);
+}
+/* 评论表单结束 */
+
+/* flash 信息开始 */
+.alert-container {
+    margin: 0 auto;
+}
+
+.alert-container .alert {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.13);
+    border-radius: unset;
+}
+/* flash 信息结束 */

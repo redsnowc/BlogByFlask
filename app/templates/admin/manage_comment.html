@@ -80,8 +80,11 @@
                                     {{ comment.content|truncate(15) }}
                                 </button>
                             </td>
-                            <!-- todo: 跳转到对应文章 -->
-                            <td>{{ comment.post.title }}</td>
+                            <td>
+                                <a href="{{ url_for('web.post', post_id=comment.post.id) }}" target="_blank">
+                                    {{ comment.post.title }}
+                                </a>
+                            </td>
                             <td class="time">{{ comment.create_time }}</td>
                             <td>
                                 {# 依据评论的不同状态渲染不同的操作按钮 #}

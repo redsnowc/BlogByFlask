@@ -7,30 +7,32 @@
 {% block navbar %}
     <!-- 顶部导航开始 -->
     <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed_top navbar-transparent" id="mainNavbar">
-        <a class="navbar-brand" href="{{ url_for('web.index') }}">{{ admin.blog_title }}</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                {% for category in categories %}
-                    {% if category.show %}
-                        {% if request.path == url_for('web.category', name_or_alias=category.alias or category.name) %}
-                            <li class="nav-item active">
-                                <a class="nav-link disabled" href="#">{{ category.name }}
-                                    <span class="sr-only">(current)</span>
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                   href="{{ url_for('web.category', name_or_alias=category.alias or category.name) }}">{{ category.name }}</a>
-                            </li>
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('web.index') }}">{{ admin.blog_title }}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    {% for category in categories %}
+                        {% if category.show %}
+                            {% if request.path == url_for('web.category', name_or_alias=category.alias or category.name) %}
+                                <li class="nav-item active">
+                                    <a class="nav-link disabled" href="#">{{ category.name }}
+                                        <span class="sr-only">(current)</span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="{{ url_for('web.category', name_or_alias=category.alias or category.name) }}">{{ category.name }}</a>
+                                </li>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
-            </ul>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </nav>
     <!-- 顶部导航结束 -->

@@ -1,0 +1,5 @@
+<H1>有新的回复请尽快处理</H1>
+<p>文章 <strong>{{ post.title }}</strong> 有新的回复。</p>
+<p>点击<a href="{{ url_for('web.manage_comment', status='unreviewed', _external=True) }}">这里</a>查看</p>
+<p>如果链接无法点击，请复制下面的地址到浏览器地址栏中打开：</p>
+<p>{{ url_for('web.manage_comment', status='unreviewed', _external=True) }}</p>

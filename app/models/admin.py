@@ -16,7 +16,9 @@ class Admin(Base, UserMixin):
     blog_title = db.Column(db.String(128), nullable=False)
     blog_subtitle = db.Column(db.String(256), nullable=False)
     blog_about = db.Column(db.Text)
-    per_page = db.Column(db.Integer, default=10)
+    post_per_page = db.Column(db.Integer, default=10)
+    comment_per_page = db.Column(db.Integer, default=10)
+    email = db.Column(db.String(64), nullable=False)
 
     # 处理密码相关的查询、储存、校验工作
     @property

@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
+from flask_mail import Mail
 
 
 class SQLALCHEMY(_SQLAlchemy):
@@ -23,6 +24,7 @@ class SQLALCHEMY(_SQLAlchemy):
 db = SQLALCHEMY()
 migrate = Migrate()
 csrf_protect = CSRFProtect()
+mail = Mail()
 
 
 def get_login_manager() -> LoginManager:

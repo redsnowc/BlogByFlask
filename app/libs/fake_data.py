@@ -27,6 +27,9 @@ class FakeData:
             admin.blog_title = '临时博客名'
             admin.blog_subtitle = '临时博客副标题'
             admin.blog_about = FakeData.FAKER.text(1000)
+            # 请务必执行完 `flask fake` 之后，执行 `flask admin` 重设管理员账户，并填入你的真实邮箱
+            # 否则你将无法收到新评论邮件
+            admin.email = 'admin@admin.com'
             db.session.add(admin)
 
     @classmethod

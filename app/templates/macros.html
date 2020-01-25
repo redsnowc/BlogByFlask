@@ -5,8 +5,7 @@
         :param admin 管理员查询记录
     #}
     <div class="col-10 post-container">
-        <!-- todo: 文章详情页 -->
-        <a class="post-title" href="#">
+        <a class="post-title" href="{{ url_for('web.post', post_id=post.id) }}">
             <h2 class="display-4">{{ post.title }}</h2>
         </a>
         <div class="post-meta">
@@ -156,7 +155,7 @@
     #}
     {# 超过一页才渲染分页器 #}
     {% if pagination.pages > 1 %}
-        <nav class="col d-flex justify-content-center" aria-label="...">
+        <nav class="col-12 d-flex justify-content-center" aria-label="...">
             <ul class="pagination">
                 {# 如果有上一页则上一页按钮可点击，否则不可用 #}
                 {% if pagination.has_prev %}
@@ -295,4 +294,90 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
+{% endmacro %}
+
+{% macro render_reply(main_comment) %}
+    {#
+        渲染评论回复内容
+        检查评论是否有回复，如果有就获取到回复内容并渲染
+        :param main_comment: 需要检查并渲染回复的评论
+    #}
+    {% if main_comment.replies %}
+        {% for reply in main_comment.replies %}
+            <div class="reply-container ml-3 mb-5 col-10">
+                <p>
+                    <span class="font-weight-bold">{{ reply.author }}</span>
+                    <span class="text-muted small">- @ {{ reply.replied.author }}</span>
+                </p>
+                <p class="time text-muted small">{{ reply.create_time }}</p>
+                <p class="font-weight-light reply-content">{{ reply.content }}</p>
+                <a class="reply-link" href="javascript:" data-id="{{ reply.id }}">回复</a>
+            </div>
+            {% if reply.replies %}
+                {{ render_reply(reply) }}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{% macro get_admin_rely_form(form) %}
+    {#
+        获取管理员回复表单字符串
+        :param form: 表单实例
+    #}
+    <div class="col-10 form-container mt-5">
+        <form action="$formAction" method="post" id="commentForm">
+            {{ form.csrf_token }}
+            <div class="form-row">
+                <div class="col-12 mb-3">
+                    <label for="content" class="sr-only">评论</label>
+                    <textarea class="form-control" placeholder="评论*" name="content" id="content"
+                              rows="7" required></textarea>
+                </div>
+                <div class="col-12 mt-3 mb-5">
+                    <button type="submit" class="btn">提交回复</button>
+                </div>
+            </div>
+            <button type="button" class="close" aria-label="Close" id="closeBtn">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </form>
+    </div>
+{% endmacro %}
+
+{% macro get_common_rely_form(form) %}
+    {#
+        获取普通用户回复表单字符串
+        :param form: 表单实例
+    #}
+    <div class="col-10 form-container mt-5">
+        <form action="$formAction" method="post" id="commentForm">
+            {{ form.csrf_token }}
+            <div class="form-row">
+                <div class="col-12 mb-3">
+                    <label for="content" class="sr-only">评论</label>
+                    <textarea class="form-control" placeholder="评论*" name="content" id="content"
+                              rows="7" required></textarea>
+                </div>
+                <div class="col-4">
+                    <label for="author" class="sr-only">昵称</label>
+                    <input type="text" class="form-control" placeholder="昵称*" name="author" id="author" required>
+                </div>
+                <div class="col-4">
+                    <label for="email" class="sr-only">邮箱</label>
+                    <input type="email" class="form-control" placeholder="邮箱" name="email" id="email">
+                </div>
+                <div class="col-4">
+                    <label for="site" class="sr-only">网站</label>
+                    <input type="url" class="form-control" placeholder="网站" name="site" id="site">
+                </div>
+                <div class="col-12 mt-3 mb-5">
+                    <button type="submit" class="btn">提交回复</button>
+                </div>
+            </div>
+            <button type="button" class="close" aria-label="Close" id="closeBtn">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </form>
+    </div>
 {% endmacro %}

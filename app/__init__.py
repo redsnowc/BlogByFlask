@@ -5,7 +5,7 @@ from flask import Flask
 from datetime import datetime
 
 from app.configs import configs
-from app.libs.extensions import db, migrate, get_login_manager, csrf_protect
+from app.libs.extensions import db, migrate, get_login_manager, csrf_protect, mail
 from app.models import Post, Category, post_category_middle, Comment, Admin, Link
 from app.libs.fake_data import FakeData
 from app.libs.custom_filters import switch_link_tag
@@ -38,6 +38,7 @@ def register_extensions(app: Flask):
     login_manager = get_login_manager()
     login_manager.init_app(app)
     csrf_protect.init_app(app)
+    mail.init_app(app)
 
 
 def register_blueprints(app: Flask):
@@ -115,8 +116,9 @@ def register_cli(app: Flask):
     @app.cli.command()
     @click.option('--username', prompt='请输入管理员用户名', help='管理员用户名')
     @click.password_option(prompt='请输入管理员密码', help='管理员密码')
-    def admin(username, password):
-        """设置管理员用户名与密码"""
+    @click.option('--email', prompt='请输入管理员邮箱', help='管理员邮箱')
+    def admin(username, password, email):
+        """设置管理员用户名、密码以及邮箱"""
 
         # 处理 MySQL 错误
         try:
@@ -134,11 +136,13 @@ def register_cli(app: Flask):
                 click.echo('更新管理员账户信息...')
                 admin.username = username
                 admin.password = password
+                admin.email = email
             else:
                 click.echo('创建管理员账户中...')
                 admin = Admin()
                 admin.username = username
                 admin.password = password
+                admin.email = email
                 admin.blog_title = '临时博客名'
                 admin.blog_subtitle = '临时博客副标题'
                 admin.blog_about = '临时博客关于'
