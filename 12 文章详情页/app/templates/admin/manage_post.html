@@ -56,7 +56,7 @@
                 {% if pagination.items %}
                     {% for post in pagination.items %}
                         <tr>
-                            <td><a href="{{ url_for('web.index', post_id=post.id) }}" target="_blank">
+                            <td><a href="{{ url_for('web.post', post_id=post.id) }}" target="_blank">
                                     {{ post.title }}
                                 </a>
                                 {% if not post.published %} - <span class="text-danger small">草稿</span>{% endif %}
