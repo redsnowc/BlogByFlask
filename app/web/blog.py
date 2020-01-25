@@ -57,7 +57,6 @@ def post(post_id):
         Comment.create_time.desc()).paginate(per_page=per_page)
 
     form = CommentForm(request.form)
-    print(request.form)
     # 根据用户登录状态设置不同的字段数据
     if current_user.is_authenticated:
         form.author.data = admin.nickname
@@ -116,3 +115,8 @@ def reply_error(fields_errors, back_url):
     :param back_url: 返回 URL
     """
     return render_template('blog/reply_error.html', fields_errors=fields_errors.split(','), back_url=back_url)
+
+
+@web.about('/about')
+def about():
+    pass

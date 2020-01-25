@@ -304,15 +304,17 @@
     #}
     {% if main_comment.replies %}
         {% for reply in main_comment.replies %}
-            <div class="reply-container ml-3 mb-5 col-10">
-                <p>
-                    <span class="font-weight-bold">{{ reply.author }}</span>
-                    <span class="text-muted small">- @ {{ reply.replied.author }}</span>
-                </p>
-                <p class="time text-muted small">{{ reply.create_time }}</p>
-                <p class="font-weight-light reply-content">{{ reply.content }}</p>
-                <a class="reply-link" href="javascript:" data-id="{{ reply.id }}">回复</a>
-            </div>
+            {% if reply.reviewed and not reply.trash %}
+                <div class="reply-container ml-3 mb-5 col-10">
+                    <p>
+                        <span class="font-weight-bold">{{ reply.author }}</span>
+                        <span class="text-muted small">- @ {{ reply.replied.author }}</span>
+                    </p>
+                    <p class="time text-muted small">{{ reply.create_time }}</p>
+                    <p class="font-weight-light reply-content">{{ reply.content }}</p>
+                    <a class="reply-link" href="javascript:" data-id="{{ reply.id }}">回复</a>
+                </div>
+            {% endif %}
             {% if reply.replies %}
                 {{ render_reply(reply) }}
             {% endif %}
