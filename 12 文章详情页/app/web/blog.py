@@ -57,7 +57,6 @@ def post(post_id):
         Comment.create_time.desc()).paginate(per_page=per_page)
 
     form = CommentForm(request.form)
-    print(request.form)
     # 根据用户登录状态设置不同的字段数据
     if current_user.is_authenticated:
         form.author.data = admin.nickname
