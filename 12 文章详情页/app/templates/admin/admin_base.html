@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block navbar %}
+    <!-- 后台导航开始 -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed_top">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('web.admin_index') }}">总览</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">文章管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">评论管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('web.manage_category') }}">分类管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">链接管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">博客设置</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <a class="btn btn-dark mr-2" href="{{ url_for('web.index') }}">回到博客</a>
+                    <a class="btn btn-light " href="{{ url_for('web.logout') }}">登出</a>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- 后台导航结束 -->
+{% endblock %}

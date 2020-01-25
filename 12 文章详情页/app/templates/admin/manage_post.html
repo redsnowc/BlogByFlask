@@ -1,0 +1,113 @@
+{% extends 'admin/admin_base.html' %}
+{% from 'macros.html' import render_csrf_btn, render_pagination, render_flash_message %}
+
+{% block title %}文章管理 - {{ admin.blog_title }}{% endblock %}
+
+{% block content %}
+    <div class="container content-container">
+        <div class="row justify-content-center">
+            <div class="table_tips col-12">
+                <div class="d-flex align-items-center">
+                    <h3 style="margin-bottom: 0">文章管理</h3>
+                    <a href="{{ url_for('web.new_post') }}" class="btn btn-outline-info ml-3">新建文章</a>
+                </div>
+            </div>
+
+            {# 渲染 Flash 信息 #}
+            {{ render_flash_message() }}
+
+            <!-- 文章类型切换导航开始 -->
+            <ul class="nav col-12 mb-3">
+                {% for status_name, info in posts_info_dict.items() %}
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center {% if request.path == info[0] %}active{% endif %}"
+                           href="{{ info[0] }}">{{ status_name }}
+                            <span class="badge badge-dark ml-1">{{ info[1] }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <!-- 文章类型切换导航结束 -->
+
+            {# 如果 status == trash 渲染清空回收站按钮 #}
+            {% if status == 'trash' %}
+                {% if pagination.total > 1 %}
+                    <div class="col-12">
+                        <div class="float-right">
+                            {{ render_csrf_btn('web.delete_record', 'mr-1', 'btn-danger', '清空回收站', True, model_name='Post', action='all') }}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            <!-- 文章信息展示表格开始 -->
+            <table class="table col-12">
+                <thead>
+                <tr>
+                    <th class="small text-muted font-weight-bold" scope="col">标题</th>
+                    <th class="small text-muted font-weight-bold" scope="col">分类</th>
+                    <th class="small text-muted font-weight-bold" scope="col">评论数</th>
+                    <th class="small text-muted font-weight-bold" scope="col">字数</th>
+                    <th class="small text-muted font-weight-bold" scope="col">创建时间</th>
+                    <th class="small text-muted font-weight-bold" scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if pagination.items %}
+                    {% for post in pagination.items %}
+                        <tr>
+                            <td><a href="{{ url_for('web.index', post_id=post.id) }}" target="_blank">
+                                    {{ post.title }}
+                                </a>
+                                {% if not post.published %} - <span class="text-danger small">草稿</span>{% endif %}
+                            </td>
+                            <td>
+                                {{ post.categories|map(attribute='name')|join('、') }}
+                            </td>
+                            <td>{{ post.comments|length }}</td>
+                            <td>{{ post.content|length }}</td>
+                            <td class="time">{{ post.create_time }}</td>
+                            <td>
+                                {# 依据文章的不同状态渲染不同的操作按钮 #}
+                                {% if not post.trash %}
+                                    <a href="{{ url_for('web.edit_post', post_id=post.id) }}" class="btn btn-sm btn-info mr-1">编辑</a>
+                                    {% if post.can_comment %}
+                                        {{ render_csrf_btn('web.close_comment', 'mr-1', 'btn-dark', '关闭评论', post_id=post.id, action='do') }}
+                                    {% else %}
+                                        {{ render_csrf_btn('web.close_comment', 'mr-1', 'btn-success', '开启评论', post_id=post.id, action='undo') }}
+                                    {% endif %}
+                                    {{ render_csrf_btn('web.trash_record', 'mr-1', 'btn-warning', '移入回收站', model_name='Post', record_id=post.id, action='do') }}
+                                {% else %}
+                                    {{ render_csrf_btn('web.trash_record', 'mr-1', 'btn-warning', '移出回收站', model_name='Post', record_id=post.id, action='undo') }}
+                                    {{ render_csrf_btn('web.delete_record', 'mr-1', 'btn-danger', '删除', True, model_name='Post', record_id=post.id) }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr class="spacer"></tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-muted">暂无文章</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            <!-- 文章信息展示表格结束 -->
+
+            {# 渲染分页器 #}
+            {{ render_pagination(pagination, 'web.manage_post', status=status) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{{ url_for('static', filename='js/tools.js') }}"></script>
+    <script>
+        (function ($) {
+            // 时间本地化
+            $('.time').each(function () {
+                this.innerText = $.toLocalTime(this.innerText)
+            })
+        })(jQuery);
+    </script>
+{% endblock %}

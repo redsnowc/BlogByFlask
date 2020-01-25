@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme_default.css') }}">
+{% endblock %}
+
+{% block navbar %}
+    <!-- 顶部导航开始 -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed_top navbar-transparent" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('web.index') }}">{{ admin.blog_title }}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    {% for category in categories %}
+                        {% if category.show %}
+                            {% if request.path == url_for('web.category', name_or_alias=category.alias or category.name) %}
+                                <li class="nav-item active">
+                                    <a class="nav-link disabled" href="#">{{ category.name }}
+                                        <span class="sr-only">(current)</span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       href="{{ url_for('web.category', name_or_alias=category.alias or category.name) }}">{{ category.name }}</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- 顶部导航结束 -->
+{% endblock %}
+
+{% block content %}
+    <!-- 回到顶部按钮开始 -->
+    <button class="btn toTop hide" role="button" id="toTop">
+        <svg t="1578375730588" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+             p-id="4618">
+            <path d="M475.666 892.82c-19.113 0-32.086-4.551-38.91-13.658-6.828-9.1-10.242-23.664-10.238-43.691v-43.004c0-19.572-0.113-40.393-0.344-62.465-0.227-21.504-0.34-43.008-0.344-64.51v-49.84c0-17.293-1.703-31.059-5.117-41.297-3.41-10.242-11.266-15.133-23.555-14.68-9.102 0-19.91-0.227-32.426-0.684s-23.551-0.688-33.11-0.688c-15.929 0-26.054-4.32-30.378-12.97-4.325-8.644-1.25-19.797 9.218-33.448 10.926-13.652 23.778-29.809 38.571-48.466a15942.85 15942.85 0 0 1 45.398-57.008 24803.214 24803.214 0 0 0 45.738-57.343c15.02-18.887 28.215-35.61 39.594-50.176 10.926-13.652 21.277-20.594 31.063-20.82 9.782-0.227 19.907 6.027 30.379 18.769 10.922 12.746 23.551 27.992 37.887 45.742s29.125 36.181 44.375 55.298a6792.884 6792.884 0 0 0 45.395 56.316 53002.2 53002.2 0 0 1 40.281 49.496c12.738 15.929 17.629 29.015 14.676 39.254-2.961 10.238-12.633 15.355-29.016 15.355h-17.066c-6.375 0-12.969 0.116-19.797 0.344-6.828 0.226-13.543 0.453-20.137 0.687-6.602 0.228-12.402 0.341-17.41 0.341-11.379 0.452-18.543 4.098-21.504 10.922-2.957 6.828-4.438 16.154-4.438 27.986 0 13.201 0.113 30.494 0.34 51.883 0.227 21.396 0.34 43.693 0.34 66.902 0 23.211 0.113 45.74 0.34 67.586 0.23 21.844 0.344 39.594 0.344 53.248 0 5.916-0.453 12.057-1.363 18.432-0.91 6.371-3.07 12.178-6.484 17.41s-8.191 9.557-14.336 12.969c-6.145 3.41-14.223 5.121-24.238 5.121-12.285 0-24.117 0.113-35.496 0.342-11.381 0.228-24.123 0.345-38.232 0.345z m0 0"
+                  fill="#707070" p-id="4619"></path>
+            <path d="M724.5 240.568c0 22.825-19.133 41.5-42.52 41.5H342.019c-23.386 0-42.52-18.675-42.52-41.5s19.134-41.5 42.52-41.5H681.98c23.387 0 42.52 18.675 42.52 41.5z"
+                  fill="#707070" p-id="4620"></path>
+        </svg>
+    </button>
+    <!-- 回到顶部按钮结束 -->
+{% endblock %}
+
+{% block footer %}
+    <!-- 页脚开始 -->
+    <footer>
+        <p class="footer_title">{{ admin.blog_title }}</p>
+        <p>&copy; {{ current_year }} {{ admin.nickname }}</p>
+        <p>Powered by Flask</p>
+    </footer>
+    <!-- 页脚结束 -->
+{% endblock %}
+
+{% block js %}
+    <script src="{{ url_for('static', filename='js/tools.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/toggle-navbar-bg.js') }}"></script>
+{% endblock %}
