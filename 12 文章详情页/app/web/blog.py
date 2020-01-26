@@ -5,7 +5,7 @@ from app.web import web
 from app.models import Post, Admin, Category, Comment
 from app.forms.comment import CommentForm
 from app.libs.extensions import db
-from app.libs.helpers import get_form_error_items, is_safe_url
+from app.libs.helpers import get_form_error_items, is_safe_url, redirect_back
 from app.libs.email import send_mail
 
 
@@ -69,6 +69,11 @@ def post(post_id):
         flash_message = '您的评论会尽快被审核，感谢您的评论。'
 
     if form.validate_on_submit():
+        # 如果文章不允许评论，则直接返回
+        if not post.can_comment:
+            flash('评论已关闭！', 'warning')
+            return redirect_back()
+
         with db.auto_commit():
             comment = Comment()
             comment.set_attr(form.data)
