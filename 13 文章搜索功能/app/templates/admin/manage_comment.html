@@ -1,0 +1,138 @@
+{% extends 'admin/admin_base.html' %}
+{% from 'macros.html' import render_csrf_btn, render_pagination, render_flash_message %}
+
+{% block title %}评论管理 - {{ admin.blog_title }}{% endblock %}
+
+{% block content %}
+    <div class="container content-container">
+        <div class="row justify-content-center">
+            <div class="table_tips col-12">
+                <h3>评论管理</h3>
+            </div>
+
+            {# 渲染 Flash 信息 #}
+            {{ render_flash_message() }}
+
+            <!-- 评论类型切换导航开始 -->
+            <ul class="nav col-12 mb-3">
+                {% for status_name, info in comments_info_dict.items() %}
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center {% if request.path == info[0] %}active{% endif %}"
+                           href="{{ info[0] }}">{{ status_name }}
+                            {% if status_name == '待审核' %}
+                                <span class="badge badge-warning ml-1">{{ info[1] }}</span>
+                            {% else %}
+                                <span class="badge badge-dark ml-1">{{ info[1] }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <!-- 评论类型切换导航结束 -->
+
+            {# 如果 status == trash 渲染清空回收站按钮 #}
+            {% if status == 'trash' %}
+                {% if pagination.total > 1 %}
+                    <div class="col-12">
+                        <div class="float-right">
+                            {{ render_csrf_btn('web.delete_record', 'mr-1', 'btn-danger', '清空回收站', True, model_name='Comment', action='all') }}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            <!-- 评论信息展示表格开始 -->
+            <table class="table col-12 comment-table">
+                <thead>
+                <tr>
+                    <th class="small text-muted font-weight-bold" scope="col">作者</th>
+                    <th class="small text-muted font-weight-bold" scope="col">内容</th>
+                    <th class="small text-muted font-weight-bold" scope="col">所属文章</th>
+                    <th class="small text-muted font-weight-bold" scope="col">发布时间</th>
+                    <th class="small text-muted font-weight-bold" scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if pagination.items %}
+                    {% for comment in pagination.items %}
+                        <tr>
+                            <td>
+                                <div>
+                                    {# 如果作者不是管理员才渲染作者名、邮箱 #}
+                                    {% if not comment.from_admin %}
+                                        {% if comment.site %}
+                                            <a href="{{ comment.site }}"><p>{{ comment.author }}</p></a>
+                                        {% else %}
+                                            <p>{{ comment.author }}</p>
+                                        {% endif %}
+                                        {% if comment.email %}
+                                            <a href="mailto:{{ comment.email }}"><p>{{ comment.email }}</p></a>
+                                        {% endif %}
+                                    {% else %}
+                                        <p class="font-weight-bold">我的评论</p>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-light" data-toggle="tooltip"
+                                        data-placement="bottom"
+                                        title="{{ comment.content }}">
+                                    {{ comment.content|truncate(15) }}
+                                </button>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('web.post', post_id=comment.post.id) }}" target="_blank">
+                                    {{ comment.post.title }}
+                                </a>
+                            </td>
+                            <td class="time">{{ comment.create_time }}</td>
+                            <td>
+                                {# 依据评论的不同状态渲染不同的操作按钮 #}
+                                {% if not comment.trash %}
+                                    {% if not comment.reviewed %}
+                                        {{ render_csrf_btn('web.review_comment', 'mr-1', 'btn-success', '通过审核', comment_id=comment.id, action='do') }}
+                                    {% else %}
+                                        {% if not comment.from_admin %}
+                                            {{ render_csrf_btn('web.review_comment', 'mr-1', 'btn-dark', '撤销审核', comment_id=comment.id, action='undo') }}
+                                        {% endif %}
+                                    {% endif %}
+                                    {{ render_csrf_btn('web.trash_record', 'mr-1', 'btn-warning', '移入回收站', model_name='Comment', record_id=comment.id, action='do') }}
+                                {% else %}
+                                    {{ render_csrf_btn('web.trash_record', 'mr-1', 'btn-warning', '移出回收站', model_name='Comment', record_id=comment.id, action='undo') }}
+                                    {{ render_csrf_btn('web.delete_record', 'mr-1', 'btn-danger', '删除', True, model_name='Comment', record_id=comment.id) }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr class="spacer"></tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-muted">暂无评论</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+            <!-- 评论信息展示表格结束 -->
+
+            {# 渲染分页器 #}
+            {{ render_pagination(pagination, 'web.manage_comment', status=status) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{{ url_for('static', filename='js/tools.js') }}"></script>
+    <script>
+        (function ($) {
+            // 启动 tooltips
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            });
+
+            // 时间本地化
+            $('.time').each(function () {
+                this.innerText = $.toLocalTime(this.innerText)
+            })
+        })(jQuery);
+    </script>
+{% endblock %}
