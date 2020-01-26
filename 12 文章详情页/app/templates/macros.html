@@ -17,7 +17,7 @@
             {% endfor %}
         </div>
         <p class="post-description">{{ post.content|striptags|truncate(250) }}</p>
-        <a href="#">
+        <a href="{{ url_for('web.post', post_id=post.id) }}">
             <button type="button" class="btn btn-outline-primary">阅读更多</button>
         </a>
         <div class="post-first d-none d-md-block">{{ post.title[0] }}</div>
