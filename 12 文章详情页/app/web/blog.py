@@ -66,7 +66,7 @@ def post(post_id):
     else:
         from_admin = False
         reviewed = False
-        flash_message = '您的评论会尽快被审核。'
+        flash_message = '您的评论会尽快被审核，感谢您的评论。'
 
     if form.validate_on_submit():
         with db.auto_commit():
@@ -81,7 +81,7 @@ def post(post_id):
 
             db.session.add(comment)
 
-        flash(flash_message)
+        flash(flash_message, 'primary')
         # 如果不是已登录用户，则发送邮件通知管理员审核
         if not current_user.is_authenticated:
             send_mail(
@@ -102,6 +102,10 @@ def post(post_id):
         else:
             back_url = url_for('web.post', post_id=post.id)
         return redirect(url_for('web.reply_error', fields_errors=','.join(fields_errors), back_url=back_url))
+
+    # 如果是主评论表单填写错误，flash 一条信息
+    if form.errors:
+        flash('评论表单填写有误。', 'danger')
 
     return render_template('blog/post.html', post=post, comment_pagination=comment_pagination, form=form,
                            fields_errors=fields_errors, fields_name=fields_name)

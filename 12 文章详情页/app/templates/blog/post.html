@@ -50,22 +50,6 @@
     <!-- 评论开始 -->
     <div class="container sub-container">
         <div class="row">
-            {# flash 信息 #}
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="col-10 alert-container">
-                        {% for message in messages %}
-                            <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                                <strong>感谢您的评论！</strong>{{ message }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-
             {# 评论表单 #}
             <div class="col-10 form-container mt-5">
                 <form action="{{ url_for('web.post', post_id=post.id) }}" method="post"
