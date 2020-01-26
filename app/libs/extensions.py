@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_wtf import CSRFProtect
 from flask_mail import Mail
+from flask_whooshee import Whooshee
 
 
 class SQLALCHEMY(_SQLAlchemy):
@@ -25,6 +26,7 @@ db = SQLALCHEMY()
 migrate = Migrate()
 csrf_protect = CSRFProtect()
 mail = Mail()
+whooshee = Whooshee()
 
 
 def get_login_manager() -> LoginManager:

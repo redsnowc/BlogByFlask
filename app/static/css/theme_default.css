@@ -324,6 +324,7 @@ footer p {
 .error-msg {
     margin-top: 1rem;
 }
+
 /* 回复表单错误信息页面结束 */
 
 /* 评论表单开始 */
@@ -361,15 +362,45 @@ footer p {
 .form-container .btn:hover {
     box-shadow: 0 10px 20px 0 rgba(1, 1, 1, .15);
 }
+
 /* 评论表单结束 */
 
-/* flash 信息开始 */
-.alert-container {
+#flash {
+    /* flash 消息 */
     margin: 0 auto;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 0 0 .5rem .5rem;
 }
 
-.alert-container .alert {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.13);
+/* 导航栏搜索框开始 */
+.search-form #searchInput {
+    background: transparent;
     border-radius: unset;
+    border-left: unset;
+    border-right: unset;
+    border-top: unset;
+    border-bottom: 2px solid transparent;
+    transition: border-bottom-color 1s;
+    color: #f8f8f8;
 }
-/* flash 信息结束 */
+
+.search-form:hover #searchInput {
+    border-bottom-color: #fff;
+}
+
+.search-form #searchInput:focus {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: unset;
+    border-bottom-color: #fff;
+    color: #f8f8f8;
+}
+
+.search-form .btn {
+    background: rgba(255, 255, 255, .1);
+}
+
+.search-form .btn:hover {
+    background: rgba(255, 255, 255, .3);
+}
+/* 导航栏搜索框结束 */

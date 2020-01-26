@@ -14,7 +14,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav mr-auto">
                     {% for category in categories %}
                         {% if category.show %}
                             {% if request.path == url_for('web.category', name_or_alias=category.alias or category.name) %}
@@ -32,10 +32,44 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
+                {# 搜索框 #}
+                <form class="form-inline my-2 my-lg-0 search-form" action="{{ url_for('web.search') }}">
+                    <label for="searchInput" class="sr-only">搜索</label>
+                    <input class="form-control mr-sm-2" type="search" name="search" required id="searchInput">
+                    <button class="btn my-2 my-sm-0 btn" type="submit">
+                        <svg height="20px" viewBox="0 0 87 98" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                             xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <path d="M43.5,87 C19.4756134,87 0,67.5243866 0,43.5 C0,19.4756134 19.4756134,0 43.5,0 C67.5243866,0 87,19.4756134 87,43.5 C86.9712941,67.5124862 67.5124862,86.9712941 43.5,87 L43.5,87 Z M43.5,6.25149701 C22.9282198,6.25149701 6.25149701,22.9282198 6.25149701,43.5 C6.25149701,64.0717802 22.9282198,80.748503 43.5,80.748503 C64.0717802,80.748503 80.748503,64.0717802 80.748503,43.5 C80.7226707,22.9389294 64.0610706,6.27732933 43.5,6.25149701 Z"
+                                  fill="#FFFFFF"></path>
+                            <path d="M83.7946143,98 C82.8238021,97.9990657 81.9056087,97.5717318 81.2972332,96.8376654 L65.7888713,78.1578532 C65.016697,77.2974215 64.791431,76.0960917 65.2017742,75.0269011 C65.6121174,73.9577104 66.5923308,73.1919486 67.7564442,73.0311432 C68.9205576,72.8703378 70.0820741,73.3402506 70.7836334,74.255848 L86.2919953,92.9356602 C87.4011296,94.2743377 87.1833696,96.2316781 85.8053536,97.3098495 C85.2379883,97.759385 84.5271015,98.0033717 83.7946143,98 Z"
+                                  fill="#FFFFFF"></path>
+                        </svg>
+                    </button>
+                </form>
             </div>
         </div>
     </nav>
     <!-- 顶部导航结束 -->
+
+    {# 渲染 flash 消息 #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show col-8 fixed_top" role="alert"
+                     id="flash">
+                    {% if category == 'danger' %}
+                        {{ message }}
+                        <a class="alert-link" href="#commentResponse">点击查看</a>
+                    {% else %}
+                        {{ message }}
+                    {% endif %}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 {% endblock %}
 
 {% block content %}
@@ -65,4 +99,17 @@
 {% block js %}
     <script src="{{ url_for('static', filename='js/tools.js') }}"></script>
     <script src="{{ url_for('static', filename='js/toggle-navbar-bg.js') }}"></script>
+
+    <script>
+        (function ($) {
+            // 自动关闭 flash 消息
+            const $flash = $('#flash');
+
+            if ($flash) {
+                setTimeout(function () {
+                    $flash.alert('close')
+                }, 4000)
+            }
+        })(jQuery);
+    </script>
 {% endblock %}

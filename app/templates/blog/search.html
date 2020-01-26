@@ -1,0 +1,47 @@
+{% extends 'blog/blog_base.html' %}
+{% from 'macros.html' import render_pagination %}
+
+{% block meta %}
+    <meta name="robots" content="noindex, noarchive">
+{% endblock %}
+
+{% block title %}'{{ search_str }}' 的搜索结果 - {{ admin.blog_title }}{% endblock %}
+
+{% block content %}
+    <!-- 巨幕开始 -->
+    <div class="jumbotron jumbotron-fluid d-flex align-items-center category-jumbotron">
+        <h1 class="display-4 col-12">'{{ search_str }}' 的搜索结果</h1>
+    </div>
+    <!-- 巨幕结束 -->
+
+    <div class="container posts-container">
+        <div class="row">
+            <div class="col-12 header">
+                <hr>
+            </div>
+            {% for post in pagination.items %}
+                <div class="col-10 post-container">
+                    <a class="post-title" href="{{ url_for('web.post', post_id=post.id) }}">
+                        <h2 class="display-4">{{ post.title.replace(search_str, '<font color="#ff3366">'+search_str+'</font>')|safe }}</h2>
+                    </a>
+                    <div class="post-meta">
+                        <span>{{ admin.nickname }}</span>
+                        <span class="meta-divider">/</span>
+                        {% for category in post.categories %}
+                            <a class="meta-link"
+                               href="{{ url_for('web.category', name_or_alias=category.alias or category.name) }}">{{ category.name }}</a>
+                        {% endfor %}
+                    </div>
+                    <p class="post-description">{{ post.content|get_search_part(search_str)|safe }}</p>
+                    <a href="{{ url_for('web.post', post_id=post.id) }}">
+                        <button type="button" class="btn btn-outline-primary">阅读更多</button>
+                    </a>
+                    <hr>
+                </div>
+            {% endfor %}
+            {{ render_pagination(pagination, 'web.search', search=search_str) }}
+        </div>
+    </div>
+
+    {{ super() }}
+{% endblock %}

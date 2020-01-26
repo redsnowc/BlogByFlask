@@ -30,6 +30,8 @@ class BaseConfig:
     MAIL_USE_TSL = os.getenv('MAIL_USE_TSL')
     MAIL_USERNAME = os.getenv('MAIL_USERNAME')
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
+    # 配置 Whooshee 搜索的最小字符长度，默认为 3
+    WHOOSHEE_MIN_STRING_LEN = 2
 
 
 class DevelopmentConfig(BaseConfig):

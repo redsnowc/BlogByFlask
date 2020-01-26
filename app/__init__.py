@@ -5,10 +5,10 @@ from flask import Flask
 from datetime import datetime
 
 from app.configs import configs
-from app.libs.extensions import db, migrate, get_login_manager, csrf_protect, mail
+from app.libs.extensions import db, migrate, get_login_manager, csrf_protect, mail, whooshee
 from app.models import Post, Category, post_category_middle, Comment, Admin, Link
 from app.libs.fake_data import FakeData
-from app.libs.custom_filters import switch_link_tag
+from app.libs.custom_filters import switch_link_tag, get_search_part
 
 
 def create_app(config: str = 'development') -> Flask:
@@ -39,6 +39,7 @@ def register_extensions(app: Flask):
     login_manager.init_app(app)
     csrf_protect.init_app(app)
     mail.init_app(app)
+    whooshee.init_app(app)
 
 
 def register_blueprints(app: Flask):
@@ -173,3 +174,4 @@ def add_template_filters(app: Flask):
     :return: None
     """
     app.add_template_filter(switch_link_tag)
+    app.add_template_filter(get_search_part)

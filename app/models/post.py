@@ -1,9 +1,10 @@
 from datetime import datetime
 
 from app.models.base import Base
-from app.libs.extensions import db
+from app.libs.extensions import db, whooshee
 
 
+@whooshee.register_model('title', 'content')
 class Post(Base):
     """
     博客文章数据表模型类

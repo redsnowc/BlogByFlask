@@ -19,6 +19,7 @@ pypinyin = "*"
 flask-wtf = "*"
 flask-login = "*"
 flask-mail = "*"
+flask-whooshee = "*"
 
 [requires]
 python_version = "3.7"

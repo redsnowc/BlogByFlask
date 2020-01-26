@@ -50,72 +50,59 @@
     <!-- 评论开始 -->
     <div class="container sub-container">
         <div class="row">
-            {# flash 信息 #}
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="col-10 alert-container">
-                        {% for message in messages %}
-                            <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                                <strong>感谢您的评论！</strong>{{ message }}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-
             {# 评论表单 #}
-            <div class="col-10 form-container mt-5">
-                <form action="{{ url_for('web.post', post_id=post.id) }}" method="post"
-                      id="commentForm">
-                    {{ form.csrf_token }}
-                    <div class="form-row">
-                        <div class="col-12 mb-3">
-                            <label for="content" class="sr-only">评论</label>
-                            <textarea class="form-control {% if 'content' in fields_name %}is-invalid{% endif %}"
-                                      placeholder="评论*" name="content" id="content"
-                                      rows="7" required>{{ form.content.data }}</textarea>
+            {# 如果文章允许评论才渲染表单 #}
+            {% if post.can_comment %}
+                <div class="col-10 form-container mt-5">
+                    <form action="{{ url_for('web.post', post_id=post.id) }}" method="post"
+                          id="commentForm">
+                        {{ form.csrf_token }}
+                        <div class="form-row">
+                            <div class="col-12 mb-3">
+                                <label for="content" class="sr-only">评论</label>
+                                <textarea class="form-control {% if 'content' in fields_name %}is-invalid{% endif %}"
+                                          placeholder="评论*" name="content" id="content"
+                                          rows="7" required>{{ form.content.data }}</textarea>
+                            </div>
+                            {% if not current_user.is_authenticated %}
+                                <div class="col-4">
+                                    <label for="author" class="sr-only">昵称</label>
+                                    <input type="text" placeholder="昵称*" name="author" id="author"
+                                           class="form-control {% if 'author' in fields_name %}is-invalid{% endif %}"
+                                           value="{{ form.author.data }}" required>
+                                </div>
+                                <div class="col-4">
+                                    <label for="email" class="sr-only">邮箱</label>
+                                    <input type="email" placeholder="邮箱" name="email" id="email"
+                                           class="form-control {% if 'email' in fields_name %}is-invalid{% endif %}"
+                                           value="{{ form.email.data }}">
+                                </div>
+                                <div class="col-4">
+                                    <label for="site" class="sr-only">网站</label>
+                                    <input type="url" placeholder="网站" name="site" id="site"
+                                           class="form-control {% if 'site' in fields_name %}is-invalid{% endif %}"
+                                           value="{{ form.site.data }}">
+                                </div>
+                            {% endif %}
+                            {% if fields_errors %}
+                                <div class="col-12 mt-2">
+                                    {% for error in fields_errors %}
+                                        <span class="text-danger small">{{ error }}</span><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="col-12 mt-2 mb-5">
+                                <button type="submit" class="btn">提交评论</button>
+                            </div>
                         </div>
-                        {% if not current_user.is_authenticated %}
-                            <div class="col-4">
-                                <label for="author" class="sr-only">昵称</label>
-                                <input type="text" placeholder="昵称*" name="author" id="author"
-                                       class="form-control {% if 'author' in fields_name %}is-invalid{% endif %}"
-                                       value="{{ form.author.data }}" required>
-                            </div>
-                            <div class="col-4">
-                                <label for="email" class="sr-only">邮箱</label>
-                                <input type="email" placeholder="邮箱" name="email" id="email"
-                                       class="form-control {% if 'email' in fields_name %}is-invalid{% endif %}"
-                                       value="{{ form.email.data }}">
-                            </div>
-                            <div class="col-4">
-                                <label for="site" class="sr-only">网站</label>
-                                <input type="url" placeholder="网站" name="site" id="site"
-                                       class="form-control {% if 'site' in fields_name %}is-invalid{% endif %}"
-                                       value="{{ form.site.data }}">
-                            </div>
-                        {% endif %}
-                        {% if fields_errors %}
-                            <div class="col-12 mt-2">
-                                {% for error in fields_errors %}
-                                    <span class="text-danger small">{{ error }}</span><br>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                        <div class="col-12 mt-2 mb-5">
-                            <button type="submit" class="btn">提交评论</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                    </form>
+                </div>
+            {% endif %}
 
             {# 评论内容 #}
             <ul class="col-10 comments-container">
                 {% for comment in comment_pagination.items %}
-                    <li class="item">
+                    <li class="item mt-5">
                         <div class="comment-container">
                             <p class="comment-author font-weight-bold">{{ comment.author }}</p>
                             <p class="time comment-time text-muted small">{{ comment.create_time }}</p>
