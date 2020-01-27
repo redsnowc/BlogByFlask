@@ -15,24 +15,17 @@
 
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('web.admin_index') }}">总览</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">文章管理</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">评论管理</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('web.manage_category') }}">分类管理</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">链接管理</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">博客设置</a>
-                    </li>
+                    {% for info_dict in admin_url_info %}
+                        {% for name, endpoint in info_dict.items() %}
+                            <li class="nav-item">
+                                {% if request.endpoint == endpoint %}
+                                    <a class="nav-link active" href="{{ url_for(endpoint) }}">{{ name }}</a>
+                                {% else %}
+                                    <a class="nav-link" href="{{ url_for(endpoint) }}">{{ name }}</a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    {% endfor %}
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <a class="btn btn-dark mr-2" href="{{ url_for('web.index') }}">回到博客</a>

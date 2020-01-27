@@ -1,1 +1,73 @@
 {% extends 'admin/admin_base.html' %}
+
+{% block title %}后台总览 - {{ admin.blog_title }}{% endblock %}
+
+{% block content %}
+    <div class="container content-container">
+        <div class="row justify-content-around">
+            <div class="card mb-3 col-5 admin-index-card">
+                <div class="card-header">相关操作</div>
+                <div class="card-body text-dark">
+                    <a href="{{ url_for('web.new_post') }}" class="badge badge-primary mb-3">新建文章</a>
+                    {% if unreviewed_comment_count %}
+                        <h5 class="display-5">
+                            您有 <span style="color: #ff3366">{{ unreviewed_comment_count }}</span> 条评评论未审核
+                        </h5>
+                        <a href="{{ url_for('web.manage_comment', status='unreviewed') }}"
+                           class="badge badge-info">立即前往审核</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card mb-3 col-5 admin-index-card">
+                <div class="card-header">概览</div>
+                <div class="card-body text-dark">
+                    <h5 class="display-5">
+                        <a href="{{ url_for('web.manage_post') }}">{{ post_count }}</a>
+                        篇已发布文章
+                    </h5>
+                    <h5 class="display-5">
+                        <a href="{{ url_for('web.manage_comment') }}">{{ comment_count }}</a>
+                        条有效评论
+                    </h5>
+                </div>
+            </div>
+            <div class="card mb-3 col-5 admin-index-card">
+                <div class="card-header">近期文章</div>
+                <div class="card-body text-dark">
+                    {% for post in recent_posts %}
+                        <p class="card-text">
+                            <a href="{{ url_for('web.post', post_id=post.id) }}"
+                               class="badge badge-light badge-link">{{ post.title|truncate(34) }}</a>
+                        </p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card mb-3 col-5 admin-index-card">
+                <div class="card-header">近期评论</div>
+                <div class="card-body text-dark">
+                    {% for comment in recent_comments %}
+                        <p class="card-text">
+                            <a href="{{ url_for('web.post', post_id=comment.post.id) }}"
+                               class="badge badge-light badge-link" data-toggle="tooltip"
+                               data-placement="bottom"
+                               title="{{ comment.content }}">
+                                {{ comment.content|truncate(34) }}
+                            </a>
+                        </p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        (function ($) {
+            // 启动 tooltips
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            });
+        })(jQuery);
+    </script>
+{% endblock %}

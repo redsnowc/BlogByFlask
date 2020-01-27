@@ -167,6 +167,7 @@ tbody tr {
 .comment-table .btn {
     font-size: .8rem;
 }
+
 /* 评论信息展示表格结束 */
 
 /* 分页器开始 */
@@ -193,3 +194,14 @@ tbody tr {
 .alert {
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.1);
 }
+
+/* 后台首页开始 */
+.admin-index-card {
+    padding: unset;
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.1);
+}
+
+.badge-link {
+    font-size: .8rem;
+}
+/* 后台首页结束 */

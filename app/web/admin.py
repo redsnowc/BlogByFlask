@@ -19,7 +19,12 @@ from app.libs.helpers import get_form_error_items, check_ajax_request_data, redi
 @login_required
 def admin_index():
     """后台首页视图"""
-    return render_template('admin/admin_index.html')
+    post_count = Post.query.filter_by(published=True, trash=False).count()
+    comment_count = Comment.query.filter_by(reviewed=True, trash=False).count()
+    recent_posts = Post.query.order_by(Post.create_time.desc()).limit(5).all()
+    recent_comments = Comment.query.order_by(Comment.create_time.desc()).limit(5).all()
+    return render_template('admin/admin_index.html', recent_comments=recent_comments, recent_posts=recent_posts,
+                           post_count=post_count, comment_count=comment_count)
 
 
 @web.route('/admin/category', methods=['POST', 'GET'])
