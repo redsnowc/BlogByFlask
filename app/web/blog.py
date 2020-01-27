@@ -147,3 +147,9 @@ def search():
         return redirect_back()
 
     return render_template('blog/search.html', search_str=search_str, pagination=pagination)
+
+
+@web.route('/about')
+def about():
+    """关于视图"""
+    return render_template('blog/about.html')

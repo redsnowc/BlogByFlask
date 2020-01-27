@@ -156,7 +156,7 @@ class FakeData:
             facebook = Link(name='FaceBook', url='#', tag='facebook')
             google = Link(name='Google', url='#', tag='google')
             linkedin = Link(name='LinkedIn', url='#', tag='linkedin')
-            other = Link(name='Oter', url='#', tag='other')
+            other = Link(name='Other', url='#', tag='other')
             telegram = Link(name='Telegram', url='#', tag='telegram')
             frendlink = Link(name='FriendLink', url='#', tag='friendLink')
             db.session.add_all([twitter, facebook, google, linkedin, weibo, weixin,

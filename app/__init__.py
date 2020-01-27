@@ -164,7 +164,9 @@ def register_template_context(app: Flask):
         categories = Category.query.all()
         links = Link.query.all()
         current_year = datetime.now().year
-        return {"admin": admin, "categories": categories, "links": links, "current_year": current_year}
+        unreviewed_comment_count = Comment.query.filter_by(reviewed=False, trash=False).count()
+        return {"admin": admin, "categories": categories, "links": links, "current_year": current_year,
+                "unreviewed_comment_count": unreviewed_comment_count}
 
 
 def add_template_filters(app: Flask):

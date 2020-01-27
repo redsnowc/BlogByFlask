@@ -5,8 +5,21 @@
 {% endblock %}
 
 {% block navbar %}
+    {% if current_user.is_authenticated %}
+        <!-- 管理员导航 -->
+        <div class="admin-nav fixed_top">
+            <a href="{{ url_for('web.admin_index') }}" class="btn">后台首页</a>
+            <a href="{{ url_for('web.new_post') }}" class="btn">新建文章</a>
+            {% if unreviewed_comment_count %}
+                <a href="{{ url_for('web.manage_comment', status='unreviewed') }}" class="btn">待审核评论
+                    <span class="badge badge-warning">{{ unreviewed_comment_count }}</span>
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
     <!-- 顶部导航开始 -->
-    <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed_top navbar-transparent" id="mainNavbar">
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed_top navbar-transparent" id="mainNavbar"
+         {% if current_user.is_authenticated %}style="top:38px"{% endif %} >
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('web.index') }}">{{ admin.blog_title }}</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
@@ -92,6 +105,7 @@
         <p class="footer_title">{{ admin.blog_title }}</p>
         <p>&copy; {{ current_year }} {{ admin.nickname }}</p>
         <p>Powered by Flask</p>
+        <p><a href="{{ url_for('web.about') }}">关于我和我的博客</a></p>
     </footer>
     <!-- 页脚结束 -->
 {% endblock %}

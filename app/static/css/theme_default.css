@@ -211,6 +211,19 @@ footer p {
     font-size: 1.5rem;
 }
 
+footer p a {
+    color: #4f4f4f;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #676767;
+    transition: border-bottom 200ms ease-in-out;
+}
+
+footer p a:hover {
+    text-decoration: none;
+    border-color: transparent;
+    color: #4f4f4f;
+}
+
 /* 页脚结束 */
 
 /* 返回顶部按钮开始 */
@@ -404,3 +417,26 @@ footer p {
     background: rgba(255, 255, 255, .3);
 }
 /* 导航栏搜索框结束 */
+
+.link-container,
+.link-header {
+    /* 关于页面 link 容器及标题 */
+    margin: 0 auto;
+}
+
+/* 管理员导航开始 */
+.admin-nav {
+    background: #23282d;
+}
+
+.admin-nav .btn {
+    background: #23282d;
+    color: #f8f8f8;
+    border-radius: unset;
+}
+
+.admin-nav .btn:hover {
+    background: #41484d;
+    color: #3498db;
+}
+/* 管理员导航结束 */
