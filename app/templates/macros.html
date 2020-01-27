@@ -383,3 +383,22 @@
         </form>
     </div>
 {% endmacro %}
+
+{% macro render_form_field(field, label_class='', field_class='', placeholder='') %}
+    {#
+        渲染表单字段
+        :param field: 表单字段
+        :param label_class: label 标签 class
+        :param field_class: 表单字段 class
+        :param placeholder: placeholder 值
+    #}
+    {{ field.label(label_class) }}
+    {% if field.errors %}
+        {{ field(class="form-control is-invalid " + field_class, placeholder=placeholder, **kwargs) }}
+    {% else %}
+        {{ field(class="form-control " + field_class, placeholder=placeholder, **kwargs) }}
+    {% endif %}
+    {% for error in field.errors %}
+        <p class="text-danger small mt-1">{{ error }}</p>
+    {% endfor %}
+{% endmacro %}
