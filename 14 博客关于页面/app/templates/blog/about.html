@@ -1,0 +1,66 @@
+{% extends 'blog/blog_base.html' %}
+
+{% block meta %}
+    <meta name="description" content="{{ admin.blog_subtitle }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="About">
+    <meta property="og:description" content="{{ admin.blog_subtitle }}">
+    <meta property="og:url" content="{{ request.remote_addr }}">
+{% endblock %}
+
+{% block title %}关于 - {{ admin.blog_title }}{% endblock %}
+
+{% block css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='3rd/editor/css/editormd.preview.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="jumbotron jumbotron-fluid d-flex align-items-center post-jumbotron"></div>
+
+    <div class="container first-container">
+        <div class="row">
+            <div class="col-10 post-header">
+                <h1 class="post-title">关于我和我的博客</h1>
+            </div>
+            <div class="col-10 post-container" id="postContent">
+                {{ admin.blog_about|safe }}
+            </div>
+            <div class="col-10 link-header">
+                <h4>相关链接</h4>
+            </div>
+            <div class="col-10 link-container mb-5">
+                {% for link in links %}
+                    {% if link.tag == 'other' or link.tag == 'friendLink' %}
+                        <a href="{{ link.url }}" class="badge badge-light ml-1" target="_blank">{{ link.name }}</a><br>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/totop.js') }}"></script>
+    <!-- Editor 渲染 about 所需 js 脚本 -->
+    <!-- marked.min.js、prettify.min.js、editormd.min.js 为必要引入，其余则是为了额外功能 -->
+    <script src="{{ url_for('static', filename='3rd/editor/lib/marked.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/lib/prettify.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/lib/raphael.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/lib/underscore.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/lib/flowchart.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/lib/jquery.flowchart.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/lib/sequence-diagram.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/editormd.min.js') }}"></script>
+    <script>
+        (function () {
+            // 转换 about
+            editormd.markdownToHTML('postContent', {
+                tex: true,
+                flowChart: true,
+                sequenceDiagram: true
+            });
+        })();
+    </script>
+{% endblock %}
