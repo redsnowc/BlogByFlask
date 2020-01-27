@@ -424,11 +424,12 @@ def edit_post(post_id):
 
         return redirect(url_for('web.manage_post'))
 
-    form.title.data = post.title
-    form.categories.data = [category.id for category in post.categories]
-    form.content_markdown.data = post.content_markdown
-    form.description.data = post.description
-    form.can_comment.data = post.can_comment
+    if not form.errors:
+        form.title.data = post.title
+        form.categories.data = [category.id for category in post.categories]
+        form.content_markdown.data = post.content_markdown
+        form.description.data = post.description
+        form.can_comment.data = post.can_commentt
 
     return render_template('admin/post_editor.html', form=form, post=post)
 
