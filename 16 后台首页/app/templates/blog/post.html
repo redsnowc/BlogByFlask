@@ -1,0 +1,162 @@
+{% extends 'blog/blog_base.html' %}
+{% from 'macros.html' import render_pagination, render_reply, get_admin_rely_form, get_common_rely_form %}
+
+{% block meta %}
+    <meta name="description" content="{{ post.description }}">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ post.title }}">
+    <meta property="og:description" content="{{ post.description }}">
+    <meta property="og:url" content="{{ request.remote_addr }}">
+{% endblock %}
+
+{% block css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='3rd/editor/css/editormd.preview.css') }}">
+{% endblock %}
+
+{% block title %}{{ post.title }} - {{ admin.blog_title }}{% endblock %}
+
+{% block content %}
+    <div class="jumbotron jumbotron-fluid d-flex align-items-center post-jumbotron"></div>
+
+    <!-- 正文开始 -->
+    <div class="container first-container">
+        <div class="row">
+            <div class="col-10 post-header">
+                <h1 class="post-title">{{ post.title }}</h1>
+                <div class="post-meta">
+                    <span>{{ admin.nickname }}</span>
+                    <span class="meta-divider">/</span>
+                    {% for category in post.categories %}
+                        <a class="meta-link"
+                           href="{{ url_for('web.category', name_or_alias=category.alias or category.name) }}">{{ category.name }}</a>
+                    {% endfor %}
+                    <span class="meta-divider">/</span>
+                    <span class="time">{{ post.create_time }}</span>
+                    <span class="meta-divider">/</span>
+                    <a href="#commentResponse" class="meta-link">添加评论</a>
+                </div>
+            </div>
+            <!-- 文章正文 -->
+            <div class="col-10 post-container" id="postContent">
+                {{ post.content|safe }}
+            </div>
+            {# 锚点 #}
+            <div id="commentResponse" class="col-12"></div>
+        </div>
+    </div>
+    <!-- 正文结束 -->
+
+    <!-- 评论开始 -->
+    <div class="container sub-container">
+        <div class="row">
+            {# 评论表单 #}
+            {# 如果文章允许评论才渲染表单 #}
+            {% if post.can_comment %}
+                <div class="col-10 form-container mt-5">
+                    <form action="{{ url_for('web.post', post_id=post.id) }}" method="post"
+                          id="commentForm">
+                        {{ form.csrf_token }}
+                        <div class="form-row">
+                            <div class="col-12 mb-3">
+                                <label for="content" class="sr-only">评论</label>
+                                <textarea class="form-control {% if 'content' in fields_name %}is-invalid{% endif %}"
+                                          placeholder="评论*" name="content" id="content"
+                                          rows="7" required>{{ form.content.data }}</textarea>
+                            </div>
+                            {% if not current_user.is_authenticated %}
+                                <div class="col-4">
+                                    <label for="author" class="sr-only">昵称</label>
+                                    <input type="text" placeholder="昵称*" name="author" id="author"
+                                           class="form-control {% if 'author' in fields_name %}is-invalid{% endif %}"
+                                           value="{{ form.author.data }}" required>
+                                </div>
+                                <div class="col-4">
+                                    <label for="email" class="sr-only">邮箱</label>
+                                    <input type="email" placeholder="邮箱" name="email" id="email"
+                                           class="form-control {% if 'email' in fields_name %}is-invalid{% endif %}"
+                                           value="{{ form.email.data }}">
+                                </div>
+                                <div class="col-4">
+                                    <label for="site" class="sr-only">网站</label>
+                                    <input type="url" placeholder="网站" name="site" id="site"
+                                           class="form-control {% if 'site' in fields_name %}is-invalid{% endif %}"
+                                           value="{{ form.site.data }}">
+                                </div>
+                            {% endif %}
+                            {% if fields_errors %}
+                                <div class="col-12 mt-2">
+                                    {% for error in fields_errors %}
+                                        <span class="text-danger small">{{ error }}</span><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="col-12 mt-2 mb-5">
+                                <button type="submit" class="btn">提交评论</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            {% endif %}
+
+            {# 评论内容 #}
+            <ul class="col-10 comments-container">
+                {% for comment in comment_pagination.items %}
+                    <li class="item mt-5">
+                        <div class="comment-container">
+                            <p class="comment-author font-weight-bold">{{ comment.author }}</p>
+                            <p class="time comment-time text-muted small">{{ comment.create_time }}</p>
+                            <p class="comment-content font-weight-light">{{ comment.content }}</p>
+                            <a class="reply-link" href="javascript:" data-id="{{ comment.id }}">回复</a>
+                        </div>
+                        {{ render_reply(comment) }}
+                    </li>
+                    <hr>
+                {% endfor %}
+                {{ render_pagination(comment_pagination, 'web.post', post_id=post.id, _anchor="commentResponse") }}
+            </ul>
+        </div>
+    </div>
+    <!-- 评论结束 -->
+
+    {{ super() }}
+{% endblock %}
+
+{% block js %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/totop.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/show-reply-form.js') }}"></script>
+    <!-- Editor 渲染文章正文所需 js 脚本 -->
+    <!-- marked.min.js、prettify.min.js、editormd.min.js 为必要引入，其余则是为了额外功能 -->
+    <script src="{{ url_for('static', filename='3rd/editor/lib/marked.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/lib/prettify.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/lib/raphael.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/lib/underscore.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/lib/flowchart.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/lib/jquery.flowchart.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/lib/sequence-diagram.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='3rd/editor/editormd.min.js') }}"></script>
+    <script>
+        (function ($) {
+            // 转换文章正文
+            editormd.markdownToHTML('postContent', {
+                tex: true,
+                flowChart: true,
+                sequenceDiagram: true
+            });
+
+            // 时间本地化
+            $('.time').each(function () {
+                this.innerText = $.toLocalTime(this.innerText)
+            });
+
+            // 点击回复链接展示回复表单
+            new ShowReplyForm({
+                is_authenticated: {{ 1 if current_user.is_authenticated else 0 }},
+                formAction: `{{ url_for('web.post', post_id=post.id) }}`,
+                adminFormHtmlStr: `{{ get_admin_rely_form(form) }}`,
+                commonFormHtmlStr: `{{ get_common_rely_form(form) }}`
+            })
+        })(jQuery);
+    </script>
+{% endblock %}
