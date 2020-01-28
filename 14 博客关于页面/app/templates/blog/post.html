@@ -108,14 +108,16 @@
                                 <p>
                                     <a href="{{ comment.site }}" class="comment-author font-weight-bold">{{ comment.author }}</a>
                                 </p>
-                                {% else %}
+                            {% else %}
                                 <p class="comment-author font-weight-bold">{{ comment.author }}</p>
                             {% endif %}
                             <p class="time comment-time text-muted small">{{ comment.create_time }}</p>
                             <p class="comment-content font-weight-light">{{ comment.content }}</p>
-                            <a class="reply-link" href="javascript:" data-id="{{ comment.id }}">回复</a>
+                            {% if post.can_comment %}
+                                <a class="reply-link" href="javascript:" data-id="{{ comment.id }}">回复</a>
+                            {% endif %}
                         </div>
-                        {{ render_reply(comment) }}
+                        {{ render_reply(comment, post) }}
                     </li>
                     <hr>
                 {% endfor %}

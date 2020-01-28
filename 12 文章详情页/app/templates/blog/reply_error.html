@@ -6,6 +6,10 @@
 
 {% block title %}回复提交失败 - {{ admin.blog_title }}{% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme_default.css') }}">
+{% endblock %}
+
 {% block content %}
     <div class="container">
         <div class="row">

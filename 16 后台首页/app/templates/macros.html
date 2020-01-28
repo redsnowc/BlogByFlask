@@ -306,11 +306,12 @@
     {% endwith %}
 {% endmacro %}
 
-{% macro render_reply(main_comment) %}
+{% macro render_reply(main_comment, post) %}
     {#
         渲染评论回复内容
         检查评论是否有回复，如果有就获取到回复内容并渲染
         :param main_comment: 需要检查并渲染回复的评论
+        :param post: 文章查询记录
     #}
     {% if main_comment.replies %}
         {% for reply in main_comment.replies %}
@@ -326,7 +327,9 @@
                     </p>
                     <p class="time text-muted small">{{ reply.create_time }}</p>
                     <p class="font-weight-light reply-content">{{ reply.content }}</p>
-                    <a class="reply-link" href="javascript:" data-id="{{ reply.id }}">回复</a>
+                    {% if post.can_commit %}
+                        <a class="reply-link" href="javascript:" data-id="{{ reply.id }}">回复</a>
+                    {% endif %}
                 </div>
             {% endif %}
             {% if reply.replies %}
