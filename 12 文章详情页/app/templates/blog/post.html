@@ -104,7 +104,13 @@
                 {% for comment in comment_pagination.items %}
                     <li class="item mt-5">
                         <div class="comment-container">
-                            <p class="comment-author font-weight-bold">{{ comment.author }}</p>
+                            {% if comment.site %}
+                                <p>
+                                    <a href="{{ comment.site }}" class="comment-author font-weight-bold">{{ comment.author }}</a>
+                                </p>
+                                {% else %}
+                                <p class="comment-author font-weight-bold">{{ comment.author }}</p>
+                            {% endif %}
                             <p class="time comment-time text-muted small">{{ comment.create_time }}</p>
                             <p class="comment-content font-weight-light">{{ comment.content }}</p>
                             <a class="reply-link" href="javascript:" data-id="{{ comment.id }}">回复</a>

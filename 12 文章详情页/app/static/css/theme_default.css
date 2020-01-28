@@ -287,11 +287,24 @@ footer p {
 }
 
 .comment-author {
+    color: #212529;
     font-size: 1.2rem;
+}
+
+a.comment-author:hover {
+    color: #4a4f53;
 }
 
 .comment-content {
     line-height: 2rem;
+}
+
+.reply-author {
+    color: #212529;
+}
+
+a.reply-author:hover {
+   color: #4a4f53;
 }
 
 .reply-link {

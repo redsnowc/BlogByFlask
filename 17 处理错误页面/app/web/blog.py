@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, abort
 from flask_login import current_user
 
 from app.web import web
@@ -82,7 +82,10 @@ def post(post_id):
             comment.post = post
 
             if reply_id:
-                comment.replied = Comment.query.get_or_404(reply_id)
+                replied_comment = Comment.query.get_or_404(reply_id)
+                if replied_comment.trash or not replied_comment.reviewed or replied_comment.post.id != post.id:
+                    abort(404)
+                comment.replied = replied_comment
 
             db.session.add(comment)
 
