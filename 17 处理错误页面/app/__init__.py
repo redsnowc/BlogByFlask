@@ -207,7 +207,12 @@ def register_error_templates(app: Flask):
             'page_title': '找不到您要访问的页面...',
             'description': f'抱歉，您要访问的页面不存在，您可以<a href="{url_for("web.index")}">返回首页</a>，或者查看以下内容：'
         }
+        # 注意单元测试时，需使用 SQLite 查询
+        # MySQL
         posts = Post.query.filter_by(published=True, trash=False).order_by(func.rand()).limit(5)
+        # SQLite
+        # posts = Post.query.filter_by(published=True, trash=False).order_by(func.random()).limit(5)
+
         return render_template('error/error.html', posts=posts, error_info=error_info), 404
 
     @app.errorhandler(500)
