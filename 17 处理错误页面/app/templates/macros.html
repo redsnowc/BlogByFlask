@@ -327,7 +327,7 @@
                     </p>
                     <p class="time text-muted small">{{ reply.create_time }}</p>
                     <p class="font-weight-light reply-content">{{ reply.content }}</p>
-                    {% if post.can_commit %}
+                    {% if post.can_comment %}
                         <a class="reply-link" href="javascript:" data-id="{{ reply.id }}">回复</a>
                     {% endif %}
                 </div>
