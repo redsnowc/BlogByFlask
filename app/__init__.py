@@ -1,14 +1,18 @@
 import click
 import os
 
-from flask import Flask
+from flask import Flask, render_template, url_for, request
 from datetime import datetime
+
+from sqlalchemy import func
+from flask_wtf.csrf import CSRFError
 
 from app.configs import configs
 from app.libs.extensions import db, migrate, get_login_manager, csrf_protect, mail, whooshee
 from app.models import Post, Category, post_category_middle, Comment, Admin, Link
 from app.libs.fake_data import FakeData
 from app.libs.custom_filters import switch_link_tag, get_search_part
+from app.libs.helpers import is_safe_url
 
 
 def create_app(config: str = 'development') -> Flask:
@@ -24,6 +28,7 @@ def create_app(config: str = 'development') -> Flask:
     register_cli(app)
     register_template_context(app)
     add_template_filters(app)
+    register_error_templates(app)
     return app
 
 
@@ -158,6 +163,7 @@ def register_template_context(app: Flask):
     :param app: Flask 核心对象
     :return dict: 传递给全局模板的数据
     """
+
     @app.context_processor
     def generate_template_context():
         admin = Admin.query.first()
@@ -185,3 +191,48 @@ def add_template_filters(app: Flask):
     """
     app.add_template_filter(switch_link_tag)
     app.add_template_filter(get_search_part)
+
+
+def register_error_templates(app: Flask):
+    """
+    注册 HTTP 请求错误时页面显示模板
+    :param app: Flask 核心对象
+    :return: None
+    """
+    @app.errorhandler(404)
+    def not_found(e):
+        """处理 404 错误"""
+        error_info = {
+            'head_title': '找不到您要访问的页面',
+            'page_title': '找不到您要访问的页面...',
+            'description': f'抱歉，您要访问的页面不存在，您可以<a href="{url_for("web.index")}">返回首页</a>，或者查看以下内容：'
+        }
+        posts = Post.query.filter_by(published=True, trash=False).order_by(func.rand()).limit(5)
+        return render_template('error/error.html', posts=posts, error_info=error_info), 404
+
+    @app.errorhandler(500)
+    def server_error(e):
+        """处理 500 错误"""
+        error_info = {
+            'head_title': '似乎有什么意外出现了',
+            'page_title': '似乎有什么意外出现了...',
+            'description': f'抱歉，有不可名状的错误突然出现，您可以<a href="{url_for("web.index")}">返回首页</a>，或者查看以下内容：'
+        }
+        posts = Post.query.filter_by(published=True, trash=False).order_by(func.rand()).limit(5)
+        return render_template('error/error.html', posts=posts, error_info=error_info), 500
+
+    @app.errorhandler(CSRFError)
+    def csrf_error(e):
+        """处理 csrf_token 失效错误"""
+        # 因为 csrf 的错误普遍出现在填写表单中，所以为了引导用户回到上一页，这里有必要进行判断
+        if is_safe_url(request.referrer):
+            back_url = request.referrer
+        else:
+            back_url = url_for('web.index')
+        error_info = {
+            'head_title': '您的页面会话已过期',
+            'page_title': '您的页面会话已过期',
+            'description': f'抱歉，可能您在页面停留过久，导致会话已过期，您可以<a href="{back_url}">返回上一页</a>重新执行操作，或者查看以下内容：'
+        }
+        posts = Post.query.filter_by(published=True, trash=False).order_by(func.rand()).limit(5)
+        return render_template('error/error.html', posts=posts, error_info=error_info), 500

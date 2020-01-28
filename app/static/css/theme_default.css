@@ -324,7 +324,6 @@ footer p a:hover {
     line-height: 2rem;
     font-size: .9rem;
 }
-
 /* 评论展示结束 */
 
 /* 回复表单错误信息页面开始 */
@@ -337,7 +336,6 @@ footer p a:hover {
 .error-msg {
     margin-top: 1rem;
 }
-
 /* 回复表单错误信息页面结束 */
 
 /* 评论表单开始 */
@@ -375,7 +373,6 @@ footer p a:hover {
 .form-container .btn:hover {
     box-shadow: 0 10px 20px 0 rgba(1, 1, 1, .15);
 }
-
 /* 评论表单结束 */
 
 #flash {
@@ -440,3 +437,21 @@ footer p a:hover {
     color: #3498db;
 }
 /* 管理员导航结束 */
+
+/* 错误页面开始 */
+.error-header {
+    margin: 5rem auto 0;
+}
+
+.error-title {
+    font-size: 3rem;
+}
+
+.error-container {
+    margin: 0 auto;
+}
+
+.badge-link {
+    font-size: .9rem;
+}
+/* 错误页面结束 */
