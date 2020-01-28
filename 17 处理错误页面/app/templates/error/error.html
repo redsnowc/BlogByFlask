@@ -1,0 +1,26 @@
+{% extends 'blog/blog_base.html' %}
+
+{% block meta %}
+    <meta name="robots" content="noindex, noarchive">
+{% endblock %}
+
+{% block title %}{{ error_info['head_title'] }} - {{ admin.blog_title }}{% endblock %}
+
+{% block content %}
+    <div class="jumbotron jumbotron-fluid d-flex align-items-center post-jumbotron"></div>
+    <div class="container first-container">
+        <div class="row">
+            <div class="col-9 error-header">
+                <h1 class="error-title">{{ error_info['page_title'] }}</h1>
+            </div>
+            <div class="col-9 error-container mb-5 mt-5">
+                <p class="text-muted mb-4">{{ error_info['description']|safe }}</p>
+                {% for post in posts %}
+                    <p class="mb-2">
+                        <a href="{{ url_for('web.post', post_id=post.id) }}" class="badge badge-dark badge-link">{{ post.title }}</a>
+                    </p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
