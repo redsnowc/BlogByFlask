@@ -33,8 +33,10 @@
                     {% endfor %}
                     <span class="meta-divider">/</span>
                     <span class="time">{{ post.create_time }}</span>
-                    <span class="meta-divider">/</span>
-                    <a href="#commentResponse" class="meta-link">添加评论</a>
+                    {% if post.can_comment %}
+                        <span class="meta-divider">/</span>
+                        <a href="#commentResponse" class="meta-link">添加评论</a>
+                    {% endif %}
                 </div>
             </div>
             <!-- 文章正文 -->
