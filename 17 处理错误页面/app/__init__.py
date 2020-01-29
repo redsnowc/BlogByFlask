@@ -207,12 +207,7 @@ def register_error_templates(app: Flask):
             'page_title': '找不到您要访问的页面...',
             'description': f'抱歉，您要访问的页面不存在，您可以<a href="{url_for("web.index")}">返回首页</a>，或者查看以下内容：'
         }
-        # 注意单元测试时，需使用 SQLite 查询
-        # MySQL
-        posts = Post.query.filter_by(published=True, trash=False).order_by(func.rand()).limit(5)
-        # SQLite
-        # posts = Post.query.filter_by(published=True, trash=False).order_by(func.random()).limit(5)
-
+        posts = Post.query.filter_by(published=True, trash=False).order_by(func.random()).limit(5)
         return render_template('error/error.html', posts=posts, error_info=error_info), 404
 
     @app.errorhandler(500)
@@ -223,7 +218,7 @@ def register_error_templates(app: Flask):
             'page_title': '似乎有什么意外出现了...',
             'description': f'抱歉，有不可名状的错误突然出现，您可以<a href="{url_for("web.index")}">返回首页</a>，或者查看以下内容：'
         }
-        posts = Post.query.filter_by(published=True, trash=False).order_by(func.rand()).limit(5)
+        posts = Post.query.filter_by(published=True, trash=False).order_by(func.random()).limit(5)
         return render_template('error/error.html', posts=posts, error_info=error_info), 500
 
     @app.errorhandler(CSRFError)
@@ -239,5 +234,5 @@ def register_error_templates(app: Flask):
             'page_title': '您的页面会话已过期',
             'description': f'抱歉，可能您在页面停留过久，导致会话已过期，您可以<a href="{back_url}">返回上一页</a>重新执行操作，或者查看以下内容：'
         }
-        posts = Post.query.filter_by(published=True, trash=False).order_by(func.rand()).limit(5)
+        posts = Post.query.filter_by(published=True, trash=False).order_by(func.random()).limit(5)
         return render_template('error/error.html', posts=posts, error_info=error_info), 500
