@@ -45,7 +45,7 @@ def check_ajax_request_data(data: Union[dict, ImmutableMultiDict]):
         return json.dumps(failed_data)
 
     # 如果 data 类型有误则直接返回错误提示
-    if not (type(data) != dict or type(data) != ImmutableMultiDict):
+    if not (type(data) == dict or type(data) == ImmutableMultiDict):
         failed_data['msg'] = 'AJAX 请求数据格式不正确'
         return json.dumps(failed_data)
 
