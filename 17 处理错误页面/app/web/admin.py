@@ -456,7 +456,7 @@ def uploaded_image(filename):
 @login_required
 def upload_image():
     """上传图片视图"""
-    file = request.files['editormd-image-file']
+    file = request.files.get('editormd-image-file')
     base_info = {
         'success': 0,
         'message': '图片上传失败'
