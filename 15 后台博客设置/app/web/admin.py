@@ -47,7 +47,7 @@ def get_category():
     """
         ajax 获取分类记录视图
         该视图仅能接受固定格式的 ajax 请求数据
-        js object example {model: 'Category', id: 1}
+        js object example {modelName: 'Category', id: 1}
         :return 依据实际情况返回对应的 json 字符串
     """
 
@@ -135,7 +135,7 @@ def get_link():
     """
         ajax 获取链接记录视图
         该视图仅能接受固定格式的 ajax 请求数据
-        js object example {model: 'Link', id: 1}
+        js object example {modelName: 'Link', id: 1}
         :return 依据实际情况返回对应的 json 字符串
     """
 

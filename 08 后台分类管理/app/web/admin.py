@@ -43,7 +43,7 @@ def get_category():
     """
         ajax 获取分类记录视图
         该视图仅能接受固定格式的 ajax 请求数据
-        js object example {model: 'Category', id: 1}
+        js object example {modelName: 'Category', id: 1}
         :return 依据实际情况返回对应的 json 字符串
     """
 
@@ -104,22 +104,3 @@ def delete_category(category_id):
     category = Category.query.get_or_404(category_id)
     category.delete()
     return redirect(url_for('web.manage_category'))
-
-
-@web.route('/admin/link', methods=['POST', 'GET'])
-@login_required
-def manage_link():
-    """后台链接管理管理视图"""
-    form = NewLinkForm(request.form)
-
-    if form.validate_on_submit():
-        with db.auto_commit():
-            link = Link()
-            link.set_attr(form.data)
-            db.session.add(link)
-        return redirect(url_for('web.manage_category'))
-
-    fields_names, fields_errors = get_form_error_items(form)
-    return render_template('admin/manage_link.html', form=form,
-                           fields_errors=fields_errors,
-                           fields_names=fields_names)
