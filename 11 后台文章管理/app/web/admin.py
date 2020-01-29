@@ -440,8 +440,6 @@ def uploaded_image(filename):
     获取上传图片的 Response
     :param filename: 文件名
     """
-    print(send_from_directory(current_app.config['UPLOAD_FOLDER'], filename))
-    print(type(send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)))
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
 
 
