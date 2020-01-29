@@ -163,7 +163,6 @@ def update_link():
     """
     form = EditLinkForm()
     form_data = request.form
-    print(form_data)
 
     result = check_ajax_request_data(form_data)
 
