@@ -10,14 +10,11 @@
     <title>{% block title %}{% endblock %}</title>
 
     <script>
-        // 如果 CDN 加载失败，则从本地引入静态资源
+        // 如果 CDN 加载 Bootstrap CSS 失败，则从本地引入
         window.addEventListener('error', function (e) {
             if (e) {
                 const target = e.target;
                 if (target.id === 'bootstrapCss') target.href = "{{ url_for('static', filename='3rd/bootstrap4.4.1.css') }}";
-                if (target.id === 'bootstrapJs') target.src = "{{ url_for('static', filename='3rd/bootstrap4.4.1.js') }}";
-                if (target.id === 'jquery') target.src = "{{ url_for('static', filename='3rd/jquery_slim3.4.1.js') }}";
-                if (target.id === 'popper') target.src = "{{ url_for('static', filename='3rd/popper1.16.0.js') }}";
             }
         }, true)
     </script>
@@ -71,9 +68,18 @@
 </footer>
 <!-- 页脚结束 -->
 
-<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.slim.min.js" id="jquery"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" id="popper"></script>
-<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/bootstrap.min.js" id="bootstrapJs"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<script>
+    window.jQuery || document.write("<script src='{{ url_for('static', filename='3rd/jquery_slim3.4.1.js') }}'><\/script>")
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script>
+    typeof(Popper) !== 'undefined' || document.write("<script src='{{ url_for('static', filename='3rd/popper1.16.0.js') }}'><\/script>")
+</script>
+<script src="https://ajax.aspnetcdn.com/ajax/bootstrap/4.4.1/bootstrap.min.js"></script>
+<script>
+    typeof(jQuery.fn.modal) !== 'undefined' || document.write("<script src='{{ url_for('static', filename='3rd/bootstrap4.4.1.js') }}'><\/script>")
+</script>
 
 <script src="{{ url_for('static', filename='js/tools.js') }}"></script>
 <script src="{{ url_for('static', filename='js/toggle-navbar-bg.js') }}"></script>
