@@ -6,7 +6,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Category">
     <meta property="og:description" content="{{ admin.blog_subtitle }}">
-    <meta property="og:url" content="{{ request.remote_addr }}">
+    <meta property="og:url" content="{{ request.url }}">
 {% endblock %}
 
 {% block title %}{{ category.name }} - {{ admin.blog_title }}{% endblock %}
