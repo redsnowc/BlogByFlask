@@ -1,4 +1,6 @@
 import unittest
+import os
+import shutil
 
 from flask import url_for, Response
 from typing import Union
@@ -7,6 +9,7 @@ from app import create_app
 from app.libs.extensions import db
 from app.models import Comment, Category, Post, Link
 from app.libs.fake_data import FakeData
+from app.configs import basedir
 
 
 class BaseTest(unittest.TestCase):
@@ -52,6 +55,7 @@ class BaseTest(unittest.TestCase):
         """测试结束后执行"""
         db.drop_all()
         self.context.pop()
+        shutil.rmtree(os.path.join(basedir, 'test/whooshee'))
 
     def login(self) -> Response:
         """登录"""

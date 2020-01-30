@@ -183,14 +183,14 @@ class BlogFrontTest(BaseTest):
         self.assertEqual(1, data.count('post-container'))
         self.assertEqual(2, data.count('#ff3366'))
 
-        # data = self.get_response_text_data('web.search', 'get', follow_redirects=True, search='')
-        # self.assertIn('搜索内容不能为空', data)
-        #
-        # data = self.get_response_text_data('web.search', 'get', follow_redirects=True, search='1')
-        # self.assertIn('搜索内容不能少于两个字符', data)
-        #
-        # data = self.get_response_text_data('web.search', 'get', follow_redirects=True, search='nothing')
-        # self.assertIn('没有搜索到任何包含 nothing 的结果', data)
+        data = self.get_response_text_data('web.search', 'get', follow_redirects=True, search='')
+        self.assertIn('搜索内容不能为空', data)
+
+        data = self.get_response_text_data('web.search', 'get', follow_redirects=True, search='1')
+        self.assertIn('搜索内容不能少于两个字符', data)
+
+        data = self.get_response_text_data('web.search', 'get', follow_redirects=True, search='nothing')
+        self.assertIn('没有搜索到任何包含 nothing 的结果', data)
 
     def test_about_page(self) -> None:
         """测试关于页面"""
