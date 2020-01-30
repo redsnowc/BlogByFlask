@@ -46,7 +46,10 @@ class TestConfig(BaseConfig):
     """
     测试环境配置类
     """
-    pass
+    SECRET_KEY = 'test'
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    WTF_CSRF_ENABLED = False
 
 
 class ProductionConfig(BaseConfig):

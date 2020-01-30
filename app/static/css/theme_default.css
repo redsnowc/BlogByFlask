@@ -300,11 +300,24 @@ footer p a:hover {
 }
 
 .comment-author {
+    color: #212529;
     font-size: 1.2rem;
+}
+
+a.comment-author:hover {
+    color: #4a4f53;
 }
 
 .comment-content {
     line-height: 2rem;
+}
+
+.reply-author {
+    color: #212529;
+}
+
+a.reply-author:hover {
+   color: #4a4f53;
 }
 
 .reply-link {
@@ -415,11 +428,21 @@ footer p a:hover {
 }
 /* 导航栏搜索框结束 */
 
+/* 关于页面开始 */
+.about-header {
+    margin: 5rem auto 0 auto;
+}
+
+.about-title {
+    font-size: 3rem;
+}
+
 .link-container,
 .link-header {
     /* 关于页面 link 容器及标题 */
     margin: 0 auto;
 }
+/* 关于页面结束 */
 
 /* 管理员导航开始 */
 .admin-nav {

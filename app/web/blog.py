@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, abort
 from flask_login import current_user
 
 from app.web import web
@@ -82,7 +82,10 @@ def post(post_id):
             comment.post = post
 
             if reply_id:
-                comment.replied = Comment.query.get_or_404(reply_id)
+                replied_comment = Comment.query.get_or_404(reply_id)
+                if replied_comment.trash or not replied_comment.reviewed or replied_comment.post.id != post.id:
+                    abort(404)
+                comment.replied = replied_comment
 
             db.session.add(comment)
 
@@ -102,7 +105,7 @@ def post(post_id):
 
     # 如果是回复评论且表单验证失败，则跳转至专门显示表单错误的页面
     if reply_id and form.errors:
-        if is_safe_url(request.referrer):
+        if request.referrer and is_safe_url(request.referrer):
             back_url = request.referrer
         else:
             back_url = url_for('web.post', post_id=post.id)
@@ -116,13 +119,13 @@ def post(post_id):
                            fields_errors=fields_errors, fields_name=fields_name)
 
 
-@web.route('/reply-error/<fields_errors>/<path:back_url>')
-def reply_error(fields_errors, back_url):
+@web.route('/reply-error/<fields_errors>')
+def reply_error(fields_errors):
     """
     专门处理回复评论表单的错误显示
     :param fields_errors: 表单错误信息
-    :param back_url: 返回 URL
     """
+    back_url = request.args.get('back_url')
     return render_template('blog/reply_error.html', fields_errors=fields_errors.split(','), back_url=back_url)
 
 

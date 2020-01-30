@@ -33,8 +33,10 @@
                     {% endfor %}
                     <span class="meta-divider">/</span>
                     <span class="time">{{ post.create_time }}</span>
-                    <span class="meta-divider">/</span>
-                    <a href="#commentResponse" class="meta-link">添加评论</a>
+                    {% if post.can_comment %}
+                        <span class="meta-divider">/</span>
+                        <a href="#commentResponse" class="meta-link">添加评论</a>
+                    {% endif %}
                 </div>
             </div>
             <!-- 文章正文 -->
@@ -104,12 +106,20 @@
                 {% for comment in comment_pagination.items %}
                     <li class="item mt-5">
                         <div class="comment-container">
-                            <p class="comment-author font-weight-bold">{{ comment.author }}</p>
+                            {% if comment.site %}
+                                <p>
+                                    <a href="{{ comment.site }}" class="comment-author font-weight-bold">{{ comment.author }}</a>
+                                </p>
+                            {% else %}
+                                <p class="comment-author font-weight-bold">{{ comment.author }}</p>
+                            {% endif %}
                             <p class="time comment-time text-muted small">{{ comment.create_time }}</p>
                             <p class="comment-content font-weight-light">{{ comment.content }}</p>
-                            <a class="reply-link" href="javascript:" data-id="{{ comment.id }}">回复</a>
+                            {% if post.can_comment %}
+                                <a class="reply-link" href="javascript:" data-id="{{ comment.id }}">回复</a>
+                            {% endif %}
                         </div>
-                        {{ render_reply(comment) }}
+                        {{ render_reply(comment, post) }}
                     </li>
                     <hr>
                 {% endfor %}

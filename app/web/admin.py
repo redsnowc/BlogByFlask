@@ -52,7 +52,7 @@ def get_category():
     """
         ajax 获取分类记录视图
         该视图仅能接受固定格式的 ajax 请求数据
-        js object example {model: 'Category', id: 1}
+        js object example {modelName: 'Category', id: 1}
         :return 依据实际情况返回对应的 json 字符串
     """
 
@@ -140,7 +140,7 @@ def get_link():
     """
         ajax 获取链接记录视图
         该视图仅能接受固定格式的 ajax 请求数据
-        js object example {model: 'Link', id: 1}
+        js object example {modelName: 'Link', id: 1}
         :return 依据实际情况返回对应的 json 字符串
     """
 
@@ -172,7 +172,6 @@ def update_link():
     """
     form = EditLinkForm()
     form_data = request.form
-    print(form_data)
 
     result = check_ajax_request_data(form_data)
 
@@ -447,8 +446,6 @@ def uploaded_image(filename):
     获取上传图片的 Response
     :param filename: 文件名
     """
-    print(send_from_directory(current_app.config['UPLOAD_FOLDER'], filename))
-    print(type(send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)))
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
 
 
@@ -457,7 +454,7 @@ def uploaded_image(filename):
 @login_required
 def upload_image():
     """上传图片视图"""
-    file = request.files['editormd-image-file']
+    file = request.files.get('editormd-image-file')
     base_info = {
         'success': 0,
         'message': '图片上传失败'
