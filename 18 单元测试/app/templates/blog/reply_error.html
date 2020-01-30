@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <meta name="robots" content="noindex, noarchive">
+{% endblock %}
+
+{% block title %}回复提交失败 - {{ admin.blog_title }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme_default.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-8 reply-errors">
+                {% for error in fields_errors %}
+                    <p class="error-msg"><span class="font-weight-bold">错误：</span><span class="text-danger">{{ error }}</span></p>
+                {% endfor %}
+                <p class="error-link">
+                    <a href="{{ back_url }}">返回</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

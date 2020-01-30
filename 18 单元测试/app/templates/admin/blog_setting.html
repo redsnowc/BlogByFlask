@@ -1,0 +1,91 @@
+{% extends 'admin/admin_base.html' %}
+{% from 'macros.html' import render_form_field, render_flash_message %}
+
+{% block title %}博客设置 - {{ admin.blog_title }}{% endblock %}
+
+{% block css %}
+    {{ super() }}
+    <!-- Editor css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='3rd/editor/css/editormd.min.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container content-container">
+        {{ render_flash_message() }}
+        <div class="form-row inline-form-container">
+            <!-- 博客设置表单开始 -->
+            <form action="{{ url_for('web.blog_setting') }}" class="col-12" method="post">
+                {{ form.csrf_token }}
+                <div class="col-12 form-group">
+                    {{ render_form_field(form.blog_title, field_class="form-control-lg", placeholder="博客名称") }}
+                </div>
+                <div class="col-12 form-group">
+                    {{ render_form_field(form.blog_subtitle, placeholder="博客副标题") }}
+                </div>
+                <div class="col-5 form-group">
+                    {{ render_form_field(form.nickname, placeholder="管理员昵称") }}
+                </div>
+                <div class="col-5 form-group">
+                    {{ render_form_field(form.email, placeholder="管理员邮箱", type="email") }}
+                </div>
+                <div class="col-3 form-group">
+                    {{ render_form_field(form.post_per_page, placeholder="文章每页显示数量", type="number") }}
+                </div>
+                <div class="col-3 form-group">
+                    {{ render_form_field(form.comment_per_page, placeholder="评论每页显示数量", type="number") }}
+                </div>
+                <div class="mb-3"></div>
+                <!-- Editor.md 编辑器 -->
+                <div class="col-12">
+                    <div id="markdownEditor">
+                        {{ form.blog_about_markdown(style="display:none;") }}
+                    </div>
+                    {% for error in form.blog_about_markdown.errors %}
+                        <p class="text-danger small">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                <div class="col-12">
+                    {{ form.submit(class='btn btn-info') }}
+                </div>
+            </form>
+            <!-- 博客设置表单结束 -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <!-- Editor js -->
+    <script src="{{ url_for('static', filename='3rd/editor/editormd.min.js') }}"></script>
+    <script>
+        (function ($) {
+            // 启动并配置 Editor 编辑器
+            $(function () {
+                editormd("markdownEditor", {
+                    // 必要设置
+                    height: 800,
+                    path: "{{ url_for('static', filename='3rd/editor/lib/') }}",
+                    saveHTMLToTextarea: true,
+
+                    // 启动图片上传功能
+                    imageUpload: true,
+                    imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp", 'svg'],
+                    imageUploadURL: "{{ url_for('web.upload_image') }}",
+
+                    // 额外设置
+                    syncScrolling: "single",   // 滚动同步，true or false or 'single' single 意味着输入框滚动时预览框同步滚动，预览框滚动输入框不动 default = true
+                    tabSize: 4,                // tab 键缩进字符数 default = 4
+
+                    // 额外功能
+                    tex: true,                 // LaTex 数学公式
+                    flowChart: true,           // 流程图
+                    sequenceDiagram: true,     // 时序图
+
+                    // 外观
+                    theme: '',                 // 菜单部分主题，dark or light，default = ''
+                    editorTheme: 'default',    // 编辑部分主题，可选值请查阅 `app/static/3rd/editor/lib/codemirror/theme/` 目录，default = 'default'
+                    previewTheme: ''           // 预览部分主题，dark or light，default = ''
+                });
+            });
+        })(jQuery);
+    </script>
+{% endblock %}
