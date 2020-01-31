@@ -52,12 +52,9 @@ def get_category():
 
     data = request.get_json()
 
-    result = check_ajax_request_data(data)
+    result = check_ajax_request_data(data, Category.__name__)
     if isinstance(result, str):
         return result
-
-    if result.__class__.__name__ != 'Category':
-        return json.dumps({'code': 0, 'msg': '指定查询模型与该查询不符'})
 
     successful_data = {'code': 1, 'data': {}}
     successful_data['data']['id'] = result.id
@@ -80,13 +77,9 @@ def update_category():
     form = EditCategoryForm()
     form_data = request.form
 
-    result = check_ajax_request_data(form_data)
-
+    result = check_ajax_request_data(form_data, Category.__name__)
     if isinstance(result, str):
         return result
-
-    if result.__class__.__name__ != 'Category':
-        return json.dumps({'code': 0, 'msg': '指定查询模型与该查询不符'})
 
     if form.validate_on_submit():
         with db.auto_commit():
@@ -140,12 +133,9 @@ def get_link():
 
     data = request.get_json()
 
-    result = check_ajax_request_data(data)
+    result = check_ajax_request_data(data, Link.__name__)
     if isinstance(result, str):
         return result
-
-    if result.__class__.__name__ != 'Link':
-        return json.dumps({'code': 0, 'msg': '指定查询模型与该查询不符'})
 
     successful_data = {'code': 1, 'data': {}}
     successful_data['data']['id'] = result.id
@@ -167,13 +157,10 @@ def update_link():
     form = EditLinkForm()
     form_data = request.form
 
-    result = check_ajax_request_data(form_data)
+    result = check_ajax_request_data(form_data, Link.__name__)
 
     if isinstance(result, str):
         return result
-
-    if result.__class__.__name__ != 'Link':
-        return json.dumps({'code': 0, 'msg': '指定查询模型与该查询不符'})
 
     if form.validate_on_submit():
         with db.auto_commit():

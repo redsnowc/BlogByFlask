@@ -12,29 +12,14 @@ from werkzeug.datastructures import ImmutableMultiDict
 from typing import Union
 
 
-def get_form_error_items(form: 'FlaskForm') -> tuple:
+def check_ajax_request_data(data: Union[dict, ImmutableMultiDict], target_model_name: str):
     """
-    获取表单验证失败的字段名称及错误信息
-    :param form: 表单类实例
-    :return: 验证失败的字段名称列表和错误信息列表组成的元祖
-    """
-    form_error_items = form.errors.items()
-    fields_name = []
-    fields_errors = []
-    if form_error_items:
-        for field_name, errors in form_error_items:
-            fields_name.append(field_name)
-            fields_errors += errors
-    return fields_name, fields_errors
-
-
-def check_ajax_request_data(data: Union[dict, ImmutableMultiDict]):
-    """
-    通用 ajax 校验函数
+    ajax 请求校验函数
     校验 ajax 请求发送的数据是否有效
-    只能接受标准的 json 对象转换的 dict 或者表单数据序列化字符串
+    只能接受标准的 json 对象转换的 dict 或者表单序列化字符串转换的 ImmutableMultiDict
     要求数据中必须传递需要查询的数据库模型名称以及需要查询的 id
     :param data: ajax 请求的数据
+    :param target_model_name: 目标查询数据表模型名称
     :return: 请求数据有误则返回包含错误码及提示，数据无误则返回数据库查询记录
     """
     failed_data = {'code': 0, 'msg': ''}
@@ -78,6 +63,11 @@ def check_ajax_request_data(data: Union[dict, ImmutableMultiDict]):
     model = models.get(model_name)
     if not model:
         failed_data['msg'] = '指定查询模型不存在'
+        return json.dumps(failed_data)
+
+    # 判断模型名称是否与目标查询模型名称相符
+    if model.__name__ != target_model_name:
+        failed_data['msg'] = '指定查询模型与该查询不符'
         return json.dumps(failed_data)
 
     # 判断数据库查询记录是否存在
