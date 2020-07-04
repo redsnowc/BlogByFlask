@@ -1,4 +1,4 @@
-{% extends '_base.html' %}
+{% extends 'base.html' %}
 {% from 'macros.html' import render_index_links, render_post_summary, render_pagination%}
 
 {% block meta %}
@@ -19,7 +19,7 @@
             <p class="lead col-12">{{ admin.blog_subtitle }}</p>
             <div class="row justify-content-center">
                 <ul class="link-list">
-                    {{ redner_index_links(links) }}
+                    {{ render_index_links(links) }}
                 </ul>
             </div>
         </div>

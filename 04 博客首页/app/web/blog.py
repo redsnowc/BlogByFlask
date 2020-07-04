@@ -11,4 +11,4 @@ def index():
     per_page = admin.per_page
     pagination = Post.query.order_by(
         Post.create_time.desc()).paginate(per_page=per_page)
-    return render_template('blog/_index.html', pagination=pagination)
+    return render_template('blog/index.html', pagination=pagination)
