@@ -1,0 +1,48 @@
+.navbar {
+    background: linear-gradient(to right, #9e1e48, #ad1e79, #ad1ea1, #b226d8,#8224e3);
+}
+
+.jumbotron {
+    background: linear-gradient(to right top, #9e1e48, #ad1e79, #ad1ea1, #b226d8,#8224e3);
+}
+
+.post-title:hover {
+    color: #ad1e79;
+}
+
+.post-container .btn {
+    border: 1px solid #ad1e79;
+    color: #ad1e79;
+}
+
+.post-container .btn:hover {
+    background: #ad1e79;
+}
+
+.page-link {
+    color: #ad1e79;
+}
+
+.page-link:hover {
+    color: #ad1e79
+}
+
+.page-item.active .page-link {
+    background: #ad1e79;
+    border-color: #ad1e79;
+}
+
+.reply-link {
+    color: #ad1e79;
+    border-bottom: 1px solid #ad1e79;
+}
+
+.reply-link:hover {
+    color: #ad1e79;
+}
+
+.form-container .btn {
+    background: #ad1e79;
+    border: 1px solid #ad1e79;
+    color: #fff;
+}

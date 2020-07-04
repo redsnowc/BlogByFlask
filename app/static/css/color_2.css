@@ -1,0 +1,48 @@
+.navbar {
+    background: linear-gradient(to right, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+}
+
+.jumbotron {
+    background: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+}
+
+.post-title:hover {
+    color: #008793;
+}
+
+.post-container .btn {
+    border: 1px solid #008793;
+    color: #008793;
+}
+
+.post-container .btn:hover {
+    background: #008793;
+}
+
+.page-link {
+    color: #008793;
+}
+
+.page-link:hover {
+    color: #008793
+}
+
+.page-item.active .page-link {
+    background: #008793;
+    border-color: #008793;
+}
+
+.reply-link {
+    color: #008793;
+    border-bottom: 1px solid #008793;
+}
+
+.reply-link:hover {
+    color: #008793;
+}
+
+.form-container .btn {
+    background: #008793;
+    border: 1px solid #008793;
+    color: #fff;
+}
